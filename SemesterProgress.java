@@ -8,7 +8,6 @@ class SemesterProgress{
     System.out.println("How many subjects have you failed?");
     int failS = s.nextInt();
     double totalU = numSu * numSe * numUn;
-    System.out.println(totalU);
     double percent = (totalU - compS*numUn*numSu + failS*numUn) / totalU * 100;
     System.out.println("You are still missing " + percent + "% of your career.");
   }

@@ -8,9 +8,9 @@ class LadderBuilder{
     int piezaP = consola.nextInt();
     System.out.print("Requested size of the ladder: ");
     int goalSize = consola.nextInt();
-    if (goalSize == piezaP || goalSize/5 >= piezaG && piezaP >= goalSize%5 ) {
+    if (goalSize <= piezaP || goalSize/5 >= piezaG && piezaP >= goalSize%5 ) {
       System.out.println("You can build it.");
-      System.out.println("And you have "+(piezaG-goalSize/5<0 ? 0: piezaG-goalSize/5)+" big pieces left and "+(piezaP-goalSize%5)+" small pieces left.");
+      System.out.println("And you have "+(piezaG-goalSize/5<0 ? 0: piezaG-goalSize/5)+" big pieces left and "+(piezaP-(goalSize-(goalSize/5>=piezaG?piezaG:goalSize/5)*5))+" small pieces left.");
     } else {
       System.out.println("You don't have enough pieces.");
     }

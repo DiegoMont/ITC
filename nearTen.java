@@ -4,13 +4,9 @@ class nearTen{
     Scanner consola = new Scanner(System.in);
     System.out.print("Write a non negative number: ");
     double num = consola.nextDouble();
-    if (num > 0) {
-      double diez = Math.round(num/10)*10;
-      if (diez-num<=2 && diez-num>=-2) {
-        System.out.println("true");
-      } else {
-        System.out.println("false");
-      }
+    double diez = Math.round(num/10)*10;
+    if (num >= 0 && diez-num<=2 && diez-num>=-2) {
+      System.out.println("true");
     } else {
       System.out.println("false");
     }

@@ -27,7 +27,7 @@ class Grafica{
       System.out.print(b+" ");
       for(int a =-largo; a<largo;a++){
         if((a-b)%5==0){
-          System.out.print("*   ");
+          System.out.print("+   ");
         } else {
           System.out.print("    ");
         }

@@ -70,19 +70,19 @@ class Project{
   }
 
   public static String calculateFinalGrade(String[] califs){
-    int tasks, partialExams, project, examF;
+    double tasks, partialExams, project, examF;
     tasks = Integer.valueOf(califs[1]).intValue() + Integer.valueOf(califs[2]).intValue() + Integer.valueOf(califs[3]).intValue() + Integer.valueOf(califs[4]).intValue();
-    tasks = (int)Math.round(tasks*0.1);
+    tasks = tasks*0.1;
     partialExams = Integer.valueOf(califs[5]).intValue() + Integer.valueOf(califs[6]).intValue();
-    partialExams = (int)Math.round(partialExams * 0.075);
-    project = (int)Math.round(Integer.valueOf(califs[7]).intValue()*0.25);
-    examF = (int)Math.round(Integer.valueOf(califs[8]).intValue()*0.2);
-    return "" +(tasks + partialExams + project + examF);
+    partialExams = partialExams * 0.075;
+    project = Integer.valueOf(califs[7]).intValue() * 0.25;
+    examF = Integer.valueOf(califs[8]).intValue() * 0.2;
+    return "" +Math.round(tasks + partialExams + project + examF);
   }
 
   public static void studentReport(String[] notas){
     System.out.print("\n1. Show final grade\n2. Show activity note\n\nEnter option:");
-    if (consola.nextInt() == 2) {
+    if (consola.next().equals("2")) {
       System.out.print("Select an activity (1-8): ");
       switch (consola.next()) {
         case "1": System.out.println("In homework 1 "+notas[0]+" got "+notas[1]); break;

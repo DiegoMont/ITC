@@ -6,12 +6,46 @@ class Project{
     if (arreglo[0][0]==null) {
       System.out.println("There is no students' information available");
     } else {
-      System.out.println("Name     HW1 HW2 HW3 HW4 ParEx1 ParEx2 FinalProj FinalEx Final");
-      for (int i = 0; i < arreglo.length; i++) {
-        for (int j = 0; j < arreglo[i].length; j++) {
-          System.out.print(arreglo[i][j]+" ");
+      int sizeName=arreglo[0][0].length();
+      for(String[] student: arreglo){
+        if(sizeName<student[0].length()){
+          sizeName = student[0].length();
         }
-        System.out.println();
+      }
+      System.out.print("Name");
+      for(int i = 4; i<= sizeName; i++){
+        System.out.print(" ");
+      }
+      System.out.println("HW1 HW2 HW3 HW4 ParEx1 ParEx2 FinalProj FinalEx Final");
+      for(String[] student: arreglo){
+        System.out.print(student[0]);
+        for(int i = student[0].length(); i <= sizeName; i++){
+          System.out.print(" ");
+        }
+        for(int i =1; i <= 4; i++){
+          for(int j =student[i].length(); j < 3; j++){
+            System.out.print(" ");
+          }
+          System.out.print(student[i]+" ");
+        }
+        for(int i =5; i <= 6; i++){
+          for(int j =student[i].length(); j < 6; j++){
+            System.out.print(" ");
+          }
+          System.out.print(student[i]+" ");
+        }
+        for(int i =student[7].length(); i < 9; i++){
+          System.out.print(" ");
+        }
+        System.out.print(student[7]+" ");
+        for(int i =student[8].length(); i < 7; i++){
+          System.out.print(" ");
+        }
+        System.out.print(student[8]+" ");
+        for(int i =student[9].length(); i < 5; i++){
+          System.out.print(" ");
+        }
+        System.out.println(student[9]);
       }
     }
   }

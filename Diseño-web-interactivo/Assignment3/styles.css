@@ -1,0 +1,32 @@
+* {
+  padding: 0;
+  margin: 0;
+  border: 0 none white;
+}
+
+.centro{
+  margin: 0 auto;
+  width: 960px;
+}
+
+.container {
+  margin: 30px 0;
+}
+
+.imgLeft {
+  display: inline-block;
+  height: 450px;
+  margin-right: 6px;
+}
+
+.columnaImg {
+  display: inline-block;
+}
+
+.columnaImg img {
+  display: block;
+}
+
+.cuadruple {
+  margin: 30px 0;
+}

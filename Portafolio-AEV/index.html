@@ -2,9 +2,106 @@
 <html lang="es">
   <head>
     <meta charset="utf-8">
-    <title>Portafolio Diego</title>
+    <title>Portafolio Diego Monta&ntilde;o</title>
+    <link rel="stylesheet" href="Estilos.css" type="text/css">
   </head>
   <body>
-    <h1>En construcci&oacute;n...</h1>
+    <nav>
+      <div class="center-nav">
+        <h1>An&aacute;lisis y expresi&oacute;n verbal</h1>
+        <div class="btns-nav">
+          <ul>
+            <li id="aboutMe" onclick="mostrarContenido(0)">Sobre m&iacute;</li>
+            <li id="diagnostico" onclick="mostrarContenido(1)">Diagn&oacute;stico oral</li>
+            <li id="primer-parcial" onclick="mostrarContenido(2)">Discurso expositivo</li>
+          </ul>
+        <div>
+      </div>
+    </nav>
+    <div class="center contenido" id="info">
+      <h2>Portafolio</h2>
+      <div class="flexbox">
+      <div class="flex-item foto" id="foto-dios"></div>
+      <div class="flex-item">
+        <h3>Diego Monta&ntilde;o Mart&iacute;nez</h3>
+        <h3>A01651308</h3>
+        <h4>Instituto Tecnol&oacute;gico y de Estudios Superiores de Monterrey</h4>
+        <p>Soy estudiante de Ingenier&iacute;a en Tecnolog&iacute;as Computacionales. Me gusta mucho escuchar m&uacute;sica, ver pel&iacute;culas y en mi tiempo libre me gusta resolver pequeños problemas con programaci&oacute;n.</p>
+      </div>
+    </div>
+    </div>
+    <div class="center contenido" id="diagnose">
+      <h2>Diagn&oacute;stico oral</h2>
+      <div class="flexbox">
+        <div class="flex-item foto" id="foto-significativa"><iframe src="https://drive.google.com/file/d/1R815_C83LNYfuBRKROWy0MNDnOhCLXSG/preview" width="320" height="240"></iframe></div>
+        <div class="flex-item">
+          <p>Eleg&iacute; esta fotograf&iacute;a, que yo mismo tom&eacute;, porque el momento en el que hice la toma significaba un gran logro para m&iacute;. Despu&eacute;s de muchas horas de trabajo y dedicaci&oacute;n que puse para trabajar en el reto de un proyecto en el que particip&eacute; cuando estaba cursando preparatoria, junto con el equipo logramos un reconocimiento por ese trabajo. El reconocimiento fue participar en un evento en la universidad de mis sue&ntilde;os y estaba muy feliz y emocionado al entrar por primera vez a sus pasillos.</p>
+        </div>
+        <div class="flex-item"id="video-diagnostico"></div>
+        <div class="flex-item">
+          <p>Durante el discurso se pod&iacute;a notar que estaba nervioso. Hice varias pausas cada que dec&iacute;a una idea. El discurso si tiene un orden l&oacute;gico. En cuanto al lenguaje corporal: me mantuve todo el tiempo en el mismo lugar, usaba las manos para ilustrar y apoyar lo que estaba diciendo, sin embargo, varios movimientos de las manos y de los pies mostraban nerviosismo. Falt&oacute; hacer contacto visual con la audiencia. Al principio no usaba muletillas pero conforme me iba acercando al fin comenc&eacute; a usar algunas.</p>
+        </div>
+        <div class="flex-item">
+          <h3>R&uacute;brica de discursos</h3>
+          <table>
+            <tr><th>Aspectos</th><th>Puntos obtenidos</th></tr>
+            <tr><th>Verbales</th></tr>
+            <tr><td class="azul">Estructura general</td><td>2</td></tr>
+            <tr><td class="azul">Contenido</td><td>9</td></tr>
+            <tr><td class="azul">Vocabulario</td><td>3</td></tr>
+            <tr><td class="azul">Muletillas</td><td>-4</td></tr>
+            <tr><td class="azul">Tiempo</td><td>-3</td></tr>
+            <tr><th>Paraling&uuml;&iacute;sticos</th></tr>
+            <tr><td class="azul">Volumen</td><td>2</td></tr>
+            <tr><td class="azul">Entonaci&oacute;n</td><td>1</td></tr>
+            <tr><td class="azul">Ritmo</td><td>0</td></tr>
+            <tr><th>Kin&eacute;sicos</th></tr>
+            <tr><td class="azul">Postura</td><td>1</td></tr>
+            <tr><td class="azul">Gestos</td><td>4</td></tr>
+            <tr><td class="azul">Expresi&oacute;n facial</td><td>2</td></tr>
+            <tr><td class="azul">Mirada</td><td>3</td></tr>
+            <tr><td class="azul">Prox&eacute;mica</td><td>1</td></tr>
+            <tr><td>Total</td><td>21</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="center contenido" id="expositivo">
+      <h2>Discurso expositivo</h2>
+      <div class="flexbox">
+        <div class="flex-item" id="video-expositivo">
+
+        </div>
+        <div class="flex-item">
+          <h3>Importancia de la computadora cu&aacute;ntica</h3>
+          <h4>20 de febrero de 2019</h4>
+          <p>A comparaci&oacute;n del discurso diagn&oacute;, este estuvo mejor preparado y se pudo notar una gran mejora. Por la complejidad del tema, simplifiqu&eacute; lo m&aacute;s que pude la informaci&oacute;n para no saturar al p&uacute;blico de datos pero de forma que quedara clara la explicaci&oacute;n y supe enfocarla para llamar la atenci&oacute;n de ellos. Mostraba seguridad y hubo una mejora en el uso del lenguaje corporal.</p>
+        </div>
+        <div class="flex-item">
+          <h3>R&uacute;brica de discursos</h3>
+          <table>
+            <tr><th>Aspectos</th><th>Puntos obtenidos</th></tr>
+            <tr><th>Verbales</th></tr>
+            <tr><td class="azul">Estructura general</td><td>3</td></tr>
+            <tr><td class="azul">Contenido</td><td>10</td></tr>
+            <tr><td class="azul">Vocabulario</td><td>3</td></tr>
+            <tr><td class="azul">Muletillas</td><td>-3</td></tr>
+            <tr><td class="azul">Tiempo</td><td>-2</td></tr>
+            <tr><th>Paraling&uuml;&iacute;sticos</th></tr>
+            <tr><td class="azul">Volumen</td><td>2</td></tr>
+            <tr><td class="azul">Entonaci&oacute;n</td><td>1</td></tr>
+            <tr><td class="azul">Ritmo</td><td>2</td></tr>
+            <tr><th>Kin&eacute;sicos</th></tr>
+            <tr><td class="azul">Postura</td><td>2</td></tr>
+            <tr><td class="azul">Gestos</td><td>4</td></tr>
+            <tr><td class="azul">Expresi&oacute;n facial</td><td>2</td></tr>
+            <tr><td class="azul">Mirada</td><td>4</td></tr>
+            <tr><td class="azul">Prox&eacute;mica</td><td>2</td></tr>
+            <tr><td>Total</td><td>30</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <script src="navegacion.js" charset="utf-8"></script>
   </body>
 </html>

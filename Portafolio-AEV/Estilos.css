@@ -1,0 +1,91 @@
+@import url('https://fonts.googleapis.com/css?family=Lato:400,700');
+
+* {
+  padding: 0;
+  margin: 0;
+  font-family: Lato, sans-serif;
+}
+
+nav {
+  border: 1px solid rgb(40, 44, 52);
+  font-size: 14px;
+  background-color: rgb(40, 44, 52);
+  min-width: 748px;
+}
+
+li {
+  display: inline-block;
+  color: #fff;
+  padding: 14px 4px;;
+  border: 2px solid rgb(40, 44, 52);
+}
+
+li:hover {
+  color: rgb(182, 182, 182);
+  border: 2px solid rgb(182, 182, 182);
+}
+
+h1 {
+  text-transform: capitalize;
+  font-size: 28px;
+  font-weight: 500;
+  color: #fff;
+  margin: 10px;
+  display: inline-block;
+}
+
+h2 {
+  font-size: 40px;
+  text-align: center;
+  margin: 34px 0;
+}
+
+h4 {
+  margin-top: 10px;
+}
+
+p {
+  margin-top: 10px;
+}
+
+th, td, table {
+  border: 1px solid black;
+}
+
+.btns-nav {
+  text-transform:uppercase;
+  float: right;
+  margin-top: 4px;
+}
+.center {
+  width: 690px;
+  margin: 0 auto;
+}
+
+.center-nav{
+  margin: 0 auto;
+  width: 748px;
+}
+
+.flexbox {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.flex-item {
+  width: 320px;
+  overflow: hidden;
+}
+
+.foto {
+  background-size: 320px auto;
+}
+
+.azul {
+  color:rgb(68, 114, 196);
+}
+
+#foto-dios {
+  background-image: url(https://github.com/DiegoMont/ITC/blob/master/Dise%C3%B1o-web-interactivo/Assignment1/OAVE0283.JPG?raw=true);
+}

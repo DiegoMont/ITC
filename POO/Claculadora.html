@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang=es dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Calculadora</title>
+    <style type="text/css">
+      * {
+        margin: 0;
+        padding: 0;
+      }
+
+      h1 {
+        text-align: right;
+        padding: 0 10px;
+        grid-area: 1 / 1 / span 1 / 5;
+      }
+
+      .center {
+        background-color: grey;
+        min-width: 100px;
+        width: 60%;
+        min-height: 500px;
+        height: 90%;
+        margin: 5% auto;
+        display: grid;
+        grid-template: repeat(9, 1fr) / repeat(4, 1fr);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="center">
+      <h1 id="screen">0</h1>
+      <button type="button" id="medidasAngulares" style="grid-area: 2/1/span 1/span 1">DEG</button>
+      <button type="button" id="memoryClean" style="grid-area: 2 / 2 / span 1 / span 1 ">MC</button>
+      <button type="button" id="memoryRetrieve" style="grid-area: 2 / 3 / span 1 / span 1 ">MR</button>
+      <button type="button" id="memorySave" style="grid-area: 2 / 4 / span 1 / span 1 ">MS</button>
+      <button type="button" id="alCuadrado" style="grid-area: 3 / 1 / span 1 / span 1 ">x^2</button>
+      <button type="button" id="toPwr" style="grid-area: 3 / 2 / span 1 / span 1 ">x^y</button>
+      <button type="button" id="seno" style="grid-area: 3 / 3 / span 1 / span 1 ">sen</button>
+      <button type="button" id="coseno" style="grid-area: 3 / 4 / span 1 / span 1 ">cos</button>
+      <button type="button" id="tangente" style="grid-area: 4 / 1 / span 1 / span 1 ">tan</button>
+      <button type="button" id="raiz" style="grid-area: 4 / 2 / span 1 / span 1 ">sqrt</button>
+      <button type="button" id="logaritmo" style="grid-area: 4 / 3 / span 1 / span 1 ">log</button>
+      <button type="button" id="pi" style="grid-area: 4 / 4 / span 1 / span 1 ">pi</button>
+      <button type="button" id="factorial" style="grid-area: 5 / 1 / span 1 / span 1 ">n!</button>
+      <button type="button" id="cleanEverything" style="grid-area: 5 / 2 / span 1 / span 1 ">CE</button>
+      <button type="button" id="clean" style="grid-area: 5 / 3 / span 1 / span 1 ">C</button>
+      <button type="button" id="dividir" style="grid-area: 5 / 4 / span 1 / span 1 ">/</button>
+      <button type="button" id="siete" style="grid-area: 6 / 1 / span 1 / span 1 ">7</button>
+      <button type="button" id="ocho" style="grid-area: 6 / 2 / span 1 / span 1 ">8</button>
+      <button type="button" id="nueve" style="grid-area: 6 / 3 / span 1 / span 1 ">9</button>
+      <button type="button" id="multiplicar" style="grid-area: 6 / 4 / span 1 / span 1 ">X</button>
+      <button type="button" id="cuatro" style="grid-area: 7 / 1 / span 1 / span 1 ">4</button>
+      <button type="button" id="cinco" style="grid-area: 7 / 2 / span 1 / span 1 ">5</button>
+      <button type="button" id="seis" style="grid-area: 7 / 3 / span 1 / span 1 ">6</button>
+      <button type="button" id="restar" style="grid-area: 7 / 4 / span 1 / span 1 ">-</button>
+      <button type="button" id="uno" style="grid-area: 8 / 1 / span 1 / span 1 ">1</button>
+      <button type="button" id="dos" style="grid-area: 8 / 2 / span 1 / span 1 ">2</button>
+      <button type="button" id="tres" style="grid-area: 8 / 3 / span 1 / span 1 ">3</button>
+      <button type="button" id="sumar" style="grid-area: 8 / 4 / span 1 / span 1 ">+</button>
+      <button type="button" id="cero" style="grid-area: 9 / 2 / span 1 / span 1 ">0</button>
+      <button type="button" id="punto" style="grid-area: 9 / 3 / span 1 / span 1 ">.</button>
+      <button type="button" id="resultado" style="grid-area: 9 / 4 / span 1 / span 1 ">=</button>
+    </div>
+    <script src="Acciones-calculadora.js" charset="utf-8"></script>
+  </body>
+</html>

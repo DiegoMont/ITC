@@ -14,6 +14,9 @@ public class Calculadora extends Application implements EventHandler<MouseEvent>
   public static String operacion = "ninguna";
   public static String ultimaTecla = "tecla";
   public static boolean num1Assigned = false;
+  public static double multiplicador = 1;
+  public static boolean decimales = false;
+  public static boolean result = false;
   public static Label pantalla = new Label("0");
 
   public static void main(String[] args) {
@@ -100,87 +103,87 @@ public class Calculadora extends Application implements EventHandler<MouseEvent>
   public void handle(MouseEvent e){
     switch(((Button)e.getSource()).getId()){
       case "cero":
-      if(ultimaTecla.equals("operacion")){
+      if(ultimaTecla.equals("operacion") || result){
         valorPantalla = 0;
       }
-      valorPantalla *= 10;
-      valorPantalla += 0;
+      valorPantalla *= (decimales?1:10);
+      valorPantalla += (0*multiplicador);
       ultimaTecla = "tecla";
       break;
       case "uno":
-      if(ultimaTecla.equals("operacion")){
+      if(ultimaTecla.equals("operacion") || result){
         valorPantalla = 0;
       }
-      valorPantalla *= 10;
-      valorPantalla += 1;
+      valorPantalla *= (decimales?1:10);
+      valorPantalla += (1*multiplicador);
       ultimaTecla = "tecla";
       break;
       case "dos":
-      if(ultimaTecla.equals("operacion")){
+      if(ultimaTecla.equals("operacion") || result){
         valorPantalla = 0;
       }
-      valorPantalla *= 10;
-      valorPantalla += 2;
+      valorPantalla *= (decimales?1:10);
+      valorPantalla += (2*multiplicador);
       ultimaTecla = "tecla";
       break;
       case "tres":
-      if(ultimaTecla.equals("operacion")){
+      if(ultimaTecla.equals("operacion") || result){
         valorPantalla = 0;
       }
-      valorPantalla *= 10;
-      valorPantalla += 3;
+      valorPantalla *= (decimales?1:10);
+      valorPantalla += (3*multiplicador);
       ultimaTecla = "tecla";
       break;
       case "cuatro":
-      if(ultimaTecla.equals("operacion")){
+      if(ultimaTecla.equals("operacion") || result){
         valorPantalla = 0;
       }
-      valorPantalla *= 10;
-      valorPantalla += 4;
+      valorPantalla *= (decimales?1:10);
+      valorPantalla += (4*multiplicador);
       ultimaTecla = "tecla";
       break;
       case "cinco":
-      if(ultimaTecla.equals("operacion")){
+      if(ultimaTecla.equals("operacion") || result){
         valorPantalla = 0;
       }
-      valorPantalla *= 10;
-      valorPantalla += 5;
+      valorPantalla *= (decimales?1:10);
+      valorPantalla += (5*multiplicador);
       ultimaTecla = "tecla";
       break;
       case "seis":
-      if(ultimaTecla.equals("operacion")){
+      if(ultimaTecla.equals("operacion") || result){
         valorPantalla = 0;
       }
-      valorPantalla *= 10;
-      valorPantalla += 6;
+      valorPantalla *= (decimales?1:10);
+      valorPantalla += (6*multiplicador);
       ultimaTecla = "tecla";
       break;
       case "siete":
-      if(ultimaTecla.equals("operacion")){
+      if(ultimaTecla.equals("operacion") || result){
         valorPantalla = 0;
       }
-      valorPantalla *= 10;
-      valorPantalla += 7;
+      valorPantalla *= (decimales?1:10);
+      valorPantalla += (7*multiplicador);
       ultimaTecla = "tecla";
       break;
       case "ocho":
-      if(ultimaTecla.equals("operacion")){
+      if(ultimaTecla.equals("operacion") || result){
         valorPantalla = 0;
       }
-      valorPantalla *= 10;
-      valorPantalla += 8;
+      valorPantalla *= (decimales?1:10);
+      valorPantalla += (8*multiplicador);
       ultimaTecla = "tecla";
       break;
       case "nueve":
-      if(ultimaTecla.equals("operacion")){
+      if(ultimaTecla.equals("operacion") || result){
         valorPantalla = 0;
       }
-      valorPantalla *= 10;
-      valorPantalla += 9;
+      valorPantalla *= (decimales?1:10);
+      valorPantalla += (9*multiplicador);
       ultimaTecla = "tecla";
       break;
       case "punto decimal":
-
+      decimales = true;
       break;
       case "raiz":
         num1 = valorPantalla;
@@ -188,6 +191,7 @@ public class Calculadora extends Application implements EventHandler<MouseEvent>
         ultimaTecla = "operacion";
         operacion = "ninguna";
         num1Assigned = false;
+        decimales = false;
       break;
       case "cuadrado":
         num1 = valorPantalla;
@@ -195,15 +199,18 @@ public class Calculadora extends Application implements EventHandler<MouseEvent>
         ultimaTecla = "operacion";
         operacion = "ninguna";
         num1Assigned = false;
+        decimales = false;
       break;
       case "clean everything":
       num1Assigned = false;
       operacion = "ninguna";
       ultimaTecla = "tecla";
       valorPantalla = 0;
+      decimales = false;
       break;
       case "clean":
       valorPantalla = 0;
+      decimales = false;
       break;
       case "restar":
         operacion = "restar";
@@ -217,6 +224,7 @@ public class Calculadora extends Application implements EventHandler<MouseEvent>
           }
         }
         ultimaTecla = "operacion";
+        decimales = false;
       break;
       case "sumar":
       operacion = "sumar";
@@ -230,6 +238,7 @@ public class Calculadora extends Application implements EventHandler<MouseEvent>
         }
       }
       ultimaTecla = "operacion";
+      decimales = false;
       break;
       case "multiplicar":
         operacion = "multiplicar";
@@ -243,6 +252,7 @@ public class Calculadora extends Application implements EventHandler<MouseEvent>
           }
         }
         ultimaTecla = "operacion";
+        decimales = false;
       break;
       case "dividir":
         operacion = "dividir";
@@ -256,13 +266,24 @@ public class Calculadora extends Application implements EventHandler<MouseEvent>
           }
         }
         ultimaTecla = "operacion";
+        decimales = false;
       break;
       case "resultado":
         num2 = valorPantalla;
         realizarOperacion();
         operacion = "ninguna";
         num1Assigned = false;
+        decimales = false;
+        result = true;
       break;
+    }
+    if (!(((Button)e.getSource()).getId().equals("resultado"))) {
+      result = false;
+    }
+    if (decimales) {
+      multiplicador *=0.1;
+    } else {
+      multiplicador = 1;
     }
     pantalla.setText(valorPantalla+"");
   }

@@ -32,6 +32,8 @@ h1 {
   color: #fff;
   margin: 10px;
   display: inline-block;
+  /**/
+  width: 250px;
 }
 
 h2 {
@@ -58,7 +60,7 @@ th, td, table {
   margin-top: 4px;
 }
 .center {
-  width: 690px;
+  max-width: 700px;
   margin: 0 auto;
 }
 
@@ -88,4 +90,8 @@ th, td, table {
 
 #foto-dios {
   background-image: url(https://github.com/DiegoMont/ITC/blob/master/Dise%C3%B1o-web-interactivo/Assignment1/OAVE0283.JPG?raw=true);
+}
+
+#video-debate iframe{
+  margin-left: -160px;
 }

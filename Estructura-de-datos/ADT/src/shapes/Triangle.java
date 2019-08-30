@@ -5,48 +5,42 @@ public class Triangle extends Shape {
   private double sideB;
   private double sideC;
 
-  public Triangle(double side){
-    name = "Equilateral triangle";
-    sideA = side;
-    sideB = side;
-    sideC = side;
-  }
-
-  public Triangle(double sideA, double sideB) {
-    name = "Isosceles triangle";
-    this.sideA = sideA;
-    this.sideB = sideB;
-    this.sideC = sideB;
-  }
-
   public Triangle(double sideA, double sideB, double sideC){
-    name= "Scanlane tringle";
     this.sideA= sideA;
     this.sideB= sideB;
     this.sideC= sideC;
   }
 
+  public void setSideA(double sideA) {
+    this.sideA = sideA;
+  }
+
+  public double getSideA() {
+    return sideA;
+  }
+
+  public void setSideB(double sideB) {
+    this.sideB = sideB;
+  }
+
+  public double getSideB() {
+    return sideB;
+  }
+
+  public void setSideC(double sideC) {
+    this.sideC = sideC;
+  }
+
+  public double getSideC() {
+    return sideC;
+  }
+
   @Override
 	public double calculateArea() {
 		// TODO Auto-generated method stub
-    switch(name){
-      case "Equilateral triangle" :
-        return Math.sqrt(Math.pow((sideA/2), 2)- Math.pow(sideB, 2));
-        break;
-
-      case "Isosceles triangle" :
-        return Math.sqrt(Math.pow((sideA), 2)- Math.pow(sideB, 2));
-        break;
-
-      case "Scanlane triangle":
-      return 1;
-        break;
-      default
-
-
-
-    }
-	}
+    double sumOfDigits = (sideA+sideB+sideC) / 2;
+    return Math.sqrt(sumOfDigits * (sumOfDigits - sideA) * (sumOfDigits - sideB) * (sumOfDigits - sideC));
+  }
 
 	@Override
 	public double calculatePerimeter() {

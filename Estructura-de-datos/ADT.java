@@ -6,7 +6,7 @@ import shapes.Triangle;
 import shapes.Rectangle;
 import shapes.Tetrahedron;
 
-public class Main {
+public class ADT {
 
 	public static void main(String args[]) {
 		System.out.println("In code we trust");

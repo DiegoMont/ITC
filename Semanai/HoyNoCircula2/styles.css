@@ -1,0 +1,38 @@
+header {
+  padding: 0.5rem 0 1rem;
+  background-color: #00bf00;
+}
+
+h5 {
+  text-align: left;
+}
+
+h5, .engomado {
+  display: inline-block;
+}
+
+.engomado {
+  margin: auto 0;
+  margin-left: 1rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+}
+
+.vehiculo {
+  width: 25rem;
+  margin: 0.75rem 0;
+  padding: 1rem;
+  border-radius: 2px;
+  box-shadow: 5px 5px 10px #555;
+}
+
+.background-verde { background-color:#7cde00;}
+
+.background-rojo { background-color:#dd0000;}
+
+.background-azul { background-color:#2ab4ff;}
+
+.background-rosa { background-color:#e21c99;}
+
+.background-amarillo { background-color:#edd400;}

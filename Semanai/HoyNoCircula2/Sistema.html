@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCT</title>
+    <link rel="stylesheet" type="text/css" href="Reset.css">
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  </head>
+  <body>
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.2.2/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/3.1.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/3.1.0/firebase-database.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyC2vaBPmRrkuK2JexFlYmyt_bXBdeO7NMY",
+    authDomain: "nocircula2.firebaseapp.com",
+    databaseURL: "https://nocircula2.firebaseio.com",
+    projectId: "nocircula2",
+    storageBucket: "nocircula2.appspot.com",
+    messagingSenderId: "1079950562992",
+    appId: "1:1079950562992:web:f12d47092fc29505d1cd75"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+
+</script>
+
+    <header>
+      <h1 class="light-font">Sistema de infracciones del programa Hoy No Circula</h1>
+    </header>
+    <div id="tabla" class="centre flexbox">
+
+
+
+    </div>
+    <script src="interactividad.js" charset="utf-8"></script>
+
+    <script type="text/javascript">
+
+    // Get a reference to the database service
+    var database = firebase.database();
+    let infoRef = firebase.database().ref("info/");
+
+    class Vehiculo {
+      addMulta(){
+        this.total += 1345;
+        this.multasAcumuladas.push(this.infoMulta);
+      }
+
+      constructor(placa) {
+        this.nombre = placa;
+        this.infoMulta = "<div class='multa'><h6>Multa</h6><p><span>Ubicaci&oacute;n: </span>Tec CCM</p><p><span>Cargo:</span> $1345.00</p></div>";
+        this.total= 0;
+        this.multasAcumuladas = [];
+        this.addMulta();
+      }
+    }
+
+    let carrosRegistrados = [];
+    let objetos = [];
+
+    infoRef.on("value", function(snapshot) {
+      const queries = snapshot.val();
+      for (const variable in queries) {
+        let carrito = queries[variable];
+        if (carrito["multa"] == 1) {
+          if (carrosRegistrados.includes(carrito["placa"])) {
+            objetos[carrosRegistrados.indexOf(carrito["placa"])].addMulta();
+          } else {
+            carrosRegistrados.push(carrito["placa"]);
+            objetos.push(new Vehiculo(carrito["placa"]));
+          }
+        }
+      }
+      //LLenar la pagina de multas
+      let stringContenido = "";
+      for (let i = 0; i < carrosRegistrados.length; i++) {
+        stringContenido += "<div class='vehiculo'><div class='info-general'><h5><span>Matr&iacute;cula: </span><span class='placa'>" + carrosRegistrados[i] + "</span></h5><div class='engomado'></div></div><p><span>Propietario: </span>Juanito P&eacute;rez</p><p class='btn-detalles btn'>> Detalles sobre infracciones</p><div class='informacion-multas ocultar'>";
+        for (let multaNueva of objetos[i].multasAcumuladas) {
+          stringContenido += multaNueva;
+        }
+        stringContenido += "</div><h6>Total: $" + objetos[i].total + ".00</h6></div>";
+      }
+      document.getElementById("tabla").innerHTML = stringContenido;
+      pintarEngomado();
+    });
+    </script>
+    <footer></footer>
+  </body>
+</html>

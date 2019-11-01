@@ -1,0 +1,160 @@
+.fondo-negro {
+ /* -fx-background-color: #000; */
+ -fx-background-image: url("img/espada.png");
+ -fx-opacity: 1 !important;
+ -fx-background-size: 42px;
+ -fx-background-position: center;
+}
+
+.fondo-rojo {
+ /* -fx-background-color: #dc143c; */
+
+  -fx-background-image: url("img/arqueroMalo.png");
+  -fx-opacity: 1 !important;
+  -fx-background-size: 42px;
+  -fx-background-position: center;
+}
+
+/*
+.fondo-verde {
+  -fx-opacity: 1;
+  -fx-background-color: #008040 !important;
+  -fx-background-size: 42px;
+  -fx-background-position: center;
+
+} */
+
+.fondo-blanco {
+  -fx-background-color: #fff;
+}
+
+Label {
+  -fx-color: #fff;
+  -fx-font-size: 16px;
+}
+
+.opacidadMedia {
+  -fx-opacity: 0.5;
+}
+
+GridPane {
+  -fx-background-repeat: no-repeat;
+  -fx-background-size: 690px;
+}
+
+.mapa-principal {
+  -fx-background-image: url("img/Mapa.gif") !important;
+}
+
+.nivel-1 {
+  -fx-background-image: url("img/casa1.png");
+}
+
+.nivel-2 {
+  -fx-background-image: url("img/casa2.png");
+}
+
+.nivel-3 {
+  -fx-background-image: url("img/casa3.png");
+}
+
+.nivel-4 {
+  -fx-background-image: url("img/casa4.png");
+}
+
+.nivel-boss {
+  -fx-background-image: url("img/interiorCueva.gif");
+}
+
+/* */
+.warriorButton {
+  -fx-background-repeat: no-repeat;
+  -fx-background-image: url("img/guerrero.gif");
+  -fx-background-size: 200;
+  -fx-background-color: #ffff40;
+}
+
+.tlatoaniButton {
+  -fx-background-repeat: no-repeat;
+  -fx-background-image: url("img/tlatoani.gif");
+  -fx-background-size: 200;
+  -fx-background-color: #00a000;
+}
+
+.sacerdoteButton {
+  -fx-background-repeat: no-repeat;
+  -fx-background-image: url("img/Sacerdote.gif");
+  -fx-background-size: 200;
+  -fx-background-color: #6d2c7d;
+}
+
+.tlatoaniMapa {
+  -fx-opacity: 1;
+  -fx-background-image: url("img/tlatoaniMapa.gif");
+  -fx-background-size: 30px;
+  -fx-background-position: center;
+}
+
+.sacerdoteMapa {
+  -fx-opacity: 1;
+  -fx-background-image: url("img/SacerdoteMapa.gif");
+  -fx-background-size: 30px;
+  -fx-background-position: center;
+}
+
+.guerreroMapa {
+  -fx-opacity: 1;
+  -fx-background-image: url("img/guerreroMapa.gif");
+  -fx-background-size: 30px;
+  -fx-background-position: center;
+}
+
+
+
+.batallaCasa {
+  -fx-background-image: url("img/batallaEscena.png");
+  -fx-background-size: 530px 295px;
+  -fx-color: rgb(90, 90, 90);
+
+
+}
+
+.label1{
+-fx-font-size: 26px;
+-fx-text-fill:  rgb(255, 255, 255);
+-fx-opacity: 2;
+-fx-background-color: rgba(0, 0, 0, 0.7);
+
+}
+
+.button1{
+  -fx-font-size: 16px;
+  -fx-text-fill:  rgb(226, 65, 65);
+
+
+  }
+
+  .pausa {
+    -fx-background-image: url("img/PantallaInicial.gif") !important;
+    -fx-background-size: 600px 700px;
+
+
+  }
+
+  .botonPausa {
+
+    -fx-background-color: rgba(0, 0, 0, 0.7);
+    -fx-font-size: 26px;
+-fx-text-fill:  rgb(255, 255, 255);
+-fx-opacity: 2;
+  }
+
+ /* BorderPane{
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 690px;
+  } */
+
+.pocion {
+  -fx-background-image: url("img/baston.png");
+  -fx-background-size: 31px;
+}

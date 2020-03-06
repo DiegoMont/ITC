@@ -1,3 +1,4 @@
+import java.util.LinkedList;
 public class Vertice<T extends Comparable<T>> implements Comparable<T> {
   private T elemento;
   private LinkedList<Arista<T>> aristas;
@@ -25,6 +26,10 @@ public class Vertice<T extends Comparable<T>> implements Comparable<T> {
   }
 
   public void agregarArista(Vertice<T> vertice1, Vertice<T> vertice2) {
-    aristas.add(new Arista<>(vertice1, vertice2));
+    aristas.push(new Arista<>(vertice1, vertice2));
+  }
+
+  public int compareTo(T element) {
+    return 0;
   }
 }

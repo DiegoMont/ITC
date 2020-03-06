@@ -23,6 +23,7 @@ public class Arista<T extends Comparable<T>> implements Comparable<T>{
     this.vertice2 = vertice;
   }
 
+  @Override
   public int compareTo(T elemento) {
     return 0;
   }

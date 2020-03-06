@@ -1,5 +1,12 @@
 public class Grafo<T> {
   private LinkedList<Vertice<T>> vertices;
+  private Queue<Vertice<T>> verticesQueue;
+  private Stack<Vertice<T>> verticesStack;
+
+  public Grafo() {
+    vertices = new ArrayList<>();
+    
+  }
 
   public void agregarVertice(T elemento) {
     boolean encontrado = false;
@@ -26,8 +33,31 @@ public class Grafo<T> {
         temp2 = vertice;
     }
     if(temp1 != null && temp2 != null) {
-      
-      temp1
+      Arista<T> arista = new Arista<>(temp1, temp2);
+      temp1.agregarArista(arista);
+      temp2.agregarArista(arista);
+    }
+  }
+
+  public void recorrerAnchura() {
+    if(vertices.get() == null)
+      System.out.println("");
+    else {
+      verticesQueue.add(vertices.get(0));
+      while(!verticesQueue.isEmpty()) {
+        Vertice<T> aExplorar = verticesQueue.poll();
+        if(aExplorar.isVisitado()) {
+          System.out.println(aExplorar.getElemento().toString());
+        }
+        aExplorar.setVisitado(true);
+        List<Arista<T>> aristasAVisitar = aExplorar.getAristas();
+        for(Arista<T> arista: aristasAVisitar) {
+          if(!arista.getVertice1().isVisitado())
+            verticesQueue.add(arista.getVertice1());
+          if(!arista.getVertice2().isVisitado())
+            verticesQueue.add(arista.getVertice2());
+        }
+      }
     }
   }
 }

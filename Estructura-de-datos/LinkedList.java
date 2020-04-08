@@ -1,3 +1,4 @@
+import linkedList.Nodo;
 public class LinkedList<T> {
   private Nodo<T> inicial;
 

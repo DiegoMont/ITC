@@ -1,3 +1,7 @@
+"""
+Diego Montaño Martinez
+A01651308
+"""
 #The frog and the stream
 def streamAndFrog(rocks):
     if rocks < 0:
@@ -13,7 +17,7 @@ c(2) = c(1) + c(0) = 1 + 1 = 2
 c(3) = c(2) + c(1) = 2 + 1 = 3
 c(4) = c(3) + c(2) = 3 + 2 = 5
 Time complexity: c(n) belongs to O(2^n)
-Space complexity: 1
+Space complexity: n
 """
 
 #Filling the gaps
@@ -33,7 +37,7 @@ canvas = [[
 1, 1, 1, 1, 1], [
 1, 0, 0, 0, 1], [
 0, 1, 0, 0, 1], [
-0, 0, 0, 0, 1], [
+0, 0, 3, 0, 1], [
 0, 0, 0, 1, 1]]
 
 fill(canvas, 3, 2, 3)
@@ -41,49 +45,50 @@ for i in canvas:
     linea = ""
     for j in i:
         linea += str(j) + " "
-    print(linea)
+    #print(linea)
 
 """
 c(1, 1) = 1
 c(m, 1) = m
 c(1, n) = n
 c(m, n) = mn
-Time complexity: c(m, n) that belong to O(m, n)
-Space complexity:
+Time complexity: c(m, n) that belong to O(m*n)
+Space complexity: m * n
 """
 
 #Boolean evaluation
-cuantasRegresanTrue = 0
-def booleanEvaluation(expression):
-    operador = ""
-    index = 0
-    global cuantasRegresanTrue
-    for i in range(len(expression)):
-        if expression[i] == "|" or expression[i] == "&":
-            operador = expression[i]
-            index = i
-    if operador == "":
-        cuantasRegresanTrue += 1
-        return True
-    nuevaExpresion = expression[index:len(expression)]
-    if operador == "|":
-        if (True or booleanEvaluation(nuevaExpresion)):
-            cuantasRegresanTrue += 1
-        if (False or booleanEvaluation(nuevaExpresion)):
-            cuantasRegresanTrue += 1
+def evaluar(numVariables, operadores, resultado):
+    #print(numVariables, operadores, resultado)
+    if numVariables == 1:
+        if resultado:
+            return 1
+        else:
+            return 0
+    if operadores[0] == "|":
+        return evaluar(numVariables-1, operadores[1:len(operadores)], resultado or True) + evaluar(numVariables-1, operadores[1:len(operadores)], resultado or False)
     else:
-        if True and booleanEvaluation(nuevaExpresion):
-            cuantasRegresanTrue += 1
-        if False and booleanEvaluation(nuevaExpresion):
-            cuantasRegresanTrue += 1
-    return True
+        return evaluar(numVariables-1, operadores[1:len(operadores)], resultado and True) + evaluar(numVariables-1, operadores[1:len(operadores)], resultado and False)
 
+def booleanEvaluation(expresion):
+    numeroDeVariables = 1
+    operadores = ""
+    index = 1
+    while index < len(expresion):
+        caracter = expresion[index]
+        if caracter == "&" or caracter == "|":
+            operadores += caracter
+            numeroDeVariables += 1
+        index += 1
+    return evaluar(numeroDeVariables, operadores, True) + evaluar(numeroDeVariables, operadores, False)
 
 print(booleanEvaluation("x"))
-print(cuantasRegresanTrue)
-cuantasRegresanTrue = 0
-booleanEvaluation("x&y")
-print(cuantasRegresanTrue)
-cuantasRegresanTrue = 0
-print(booleanEvaluation("x&e|c"))
-print(cuantasRegresanTrue)
+print(booleanEvaluation("x1&x2"))
+print(booleanEvaluation("x1|x2"))
+print(booleanEvaluation("x1&x2|x3"))
+print(booleanEvaluation("x1|x2|x3"))
+print(booleanEvaluation("x1|x2&x3"))
+
+"""
+Time complexity: c(n) that belongs to Big O(2^n)
+Space complexity: n
+"""

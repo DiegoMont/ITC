@@ -1,0 +1,44 @@
+### VSCode Config ###
+.vscode/
+*.DS_Store
+
+## Archivos de pruebas ##
+inputs.txt
+input.txt
+texto.txt
+
+### C++ ###
+# Cmake build debug
+Cpp/cmake-build-debug/
+
+# Compiled Object files
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Executables
+*.exe
+*.out
+
+### Java ###
+# Compiled class file
+*.class
+
+# Log file
+*.log
+
+# Package Files #
+*.jar
+*.zip
+*.tar.gz
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*

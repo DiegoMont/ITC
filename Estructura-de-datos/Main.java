@@ -1,14 +1,15 @@
 public class Main {
   public static void main(String[] args) {
-    LinkedList<Integer> lista = new LinkedList<>();
-    lista.get(0);
-    lista.insertarAlFinal(3);
-    lista.insertarAlInicio(2);
-    lista.insertAt(1, 5);
-    lista.insertAt(1, 8);
-    lista.insertAt(4, 9);
-    lista.imprimir();
-    System.out.println(lista.remove(1));
-    lista.imprimir();
+    BinaryTree<Integer> arbolito = new BinaryTree<>();
+    arbolito.traverseInOrder();
+    arbolito.insertar(9);
+    arbolito.insertar(5);
+    arbolito.insertar(15);
+    arbolito.insertar(13);
+    arbolito.insertar(12);
+    arbolito.insertar(14);
+    arbolito.insertar(17);
+    arbolito.insertar(16);
+    arbolito.traverseInOrder();
   }
 }

@@ -7,29 +7,21 @@ OUTPUT: 4
 */
 
 import java.util.Scanner;
-import java.util.Arrays;
-import java.io.File;
-import java.io.FileNotFoundException;
 
 public class LongestSubsequence {
 
   private static int resultado;
-  public static void main(String[] args) throws FileNotFoundException {
-    Scanner sc = new Scanner(new File("input.txt"));
+  public static void main(String[] args) {
+    Scanner sc = new Scanner(System.in);
     String sequence1 = sc.next();
     String sequence2 = sc.next();
 
-    /*int[] letras = encontrarLetra(sequence1, sequence2, 0, 0);
-    while(letras[0] != -1){
-      System.out.print(sequence1.charAt(letras[0]));
-      letras = encontrarLetra(sequence1, sequence2, letras[0]+1, letras[1]+1);
-    }
-    System.out.println("");*/
     recursivo(sequence1, sequence2, "");
     System.out.println(resultado);
   }
 
   static void recursivo(String sequence1, String sequence2, String subs){
+    //System.out.println(sequence1 + "   " + sequence2);
     if(sequence1.equals("") || sequence2.equals("")){
       //System.out.println(subs);
       checarMaximo(subs);
@@ -67,24 +59,8 @@ public class LongestSubsequence {
 
   static void checarMaximo(String subs){
     if (subs.length() > resultado) {
-      //System.out.println(subs);
+      System.out.println(subs);
       resultado = subs.length();
     }
-  }
-
-  static int[] encontrarLetra(String sequence1, String sequence2, int inicio1, int inicio2){
-    //System.out.println(sequence1 + "   " + sequence2);
-    int[] letras = {-1, -1};
-    if(!(sequence1.equals("") || sequence2.equals("")))
-    for (int i = inicio1; i < sequence1.length(); i++) {
-      for(int j = inicio2; j < sequence2.length(); j++){
-        if(sequence1.charAt(i) == sequence2.charAt(j)){
-          letras[0] = i;
-          letras[1] = j;
-          return letras;
-        }
-      }
-    }
-    return letras;
   }
 }

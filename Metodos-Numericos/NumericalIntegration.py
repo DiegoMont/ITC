@@ -1,3 +1,5 @@
+import math
+
 def numericalIntegration(a, b, n = 500):
     h = (b - a) / n
     B = h / 2
@@ -50,4 +52,13 @@ def bilinearIntegration(x0, xn, y0, yn, h = 0.1):
     real = 4.85271
     error = (real-I) / real *100
     print("Error:", error)
+    return I
+
+def trapezoidArea(x, y):
+    I = 0
+    n = len(y)
+    for i in range(n-1):
+        area = abs((x[i+1] - x[i]) * (y[i+1] + y[i]) / 2)
+        I += area
+    print("The value of the integral is:", I);
     return I

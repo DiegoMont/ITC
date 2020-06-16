@@ -1,3 +1,8 @@
+import Matrices
+
+gaussianElimination = Matrices.gaussianElimination
+imprimirMatriz = Matrices.imprimirMatriz
+
 def polynomialInterpolation(x, y, xi):
     yint = [0 for i in y]
     ea = [0 for i in y]
@@ -30,29 +35,30 @@ def linearSplines(x, y, x1):
 def cubicSplines(x, y, w):
     n = len(x)
     lhs = [[0 for j in range(n-1)] for i in range(n-2)]
-    for i in range(0, n-2):
-        for j in range(0, n-2):
-            if i == j:
-                lhs[i][j] = 2 * (x[i+2] - x[i])
-            elif i == j+1:
-                lhs[i][j] = (x[i+1] - x[i])
-            elif i+1 == j:
-                lhs[i][j] = (x[i+2] - x[i+1])
-        lhs[i][n-2] = 6*(y[i+2] - y[i+1]) / (x[i+2] - x[i+1]) + 6*(y[i] - y[i+1]) / (x[i+1] - x[i])
+    for i in range(1, n-1):
+        for j in range(1, n-1):
+            if i-1 == j-1:
+                lhs[i-1][j-1] = 2 * (x[i+1] - (0 if i-1 < 0 else x[i-1]))
+            elif i-1 == j:
+                lhs[i-1][j-1] = (x[i] - (0 if i-1 < 0 else x[i-1]))
+            elif i == j-1:
+                lhs[i-1][j-1] = (x[i+1] - x[i])
+        lhs[i-1][n-2] = 6*(y[i+1] - y[i]) / (x[i+1] - x[i]) + 6*(y[i-1] - y[i]) / (x[i] - x[i-1])
+    #imprimirMatriz(lhs);
     secondDerivatives = gaussianElimination(lhs)
     fs = [0 for i in range(n)]
     for i in range(0, n-2):
         fs[i+1] = secondDerivatives[i]
-    #imprimirMatriz(lhs)
-    #print(secondDerivatives)
+    i=0
     for j in range(1, n):
-        if x[i-1] <= w and w <= x[i]:
+        if x[j-1] <= w and w <= x[j]:
             i = j
             break
-    termino1 = fs[i]*(x[i]-w)**3/(6*(x[i]-x[i-1]))
+    termino1 = fs[i-1]*(x[i]-w)**3/(6*(x[i]-x[i-1]))
     termino2 = fs[i]*(w - x[i-1])**3/(6*(x[i] - x[i-1]))
     termino3 = (y[i-1]/(x[i]-x[i-1]) - fs[i-1]*(x[i]-x[i-1])/6)*(x[i] - w)
     termino4 = (y[i]/(x[i] - x[i-1]) - fs[i]*(x[i] - x[i-1]) / 6)*(w - x[i-1])
     f = termino1 + termino2 + termino3 + termino4
-    print("Quadratic splines")
+    print("Cubic splines")
     print("f(" + str(w) + ")=", f)
+    return f

@@ -1,3 +1,5 @@
+import math
+
 def eulerMethod(x0, y0, x, n = 100):
     print("Euler method differentiation")
     h = (x - x0) / n
@@ -51,3 +53,8 @@ def ralstonsMethod(x0, y0, x, n = 100):
         yi = yi1
     print("y(" + str(x) + ")=", yi, "\n")
     return yi
+
+def fPrima(y, x):
+    return 1000/500000*(1+math.sin(math.pi*x/400))
+
+ralstonsMethod(0, 0, 200, 1000)

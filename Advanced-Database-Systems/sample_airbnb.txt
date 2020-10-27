@@ -1,0 +1,109 @@
+db.airbnb.find({
+  property_type: "Apartment"
+}).count();
+
+db.airbnb.find({
+  "address.country": "Portugal"
+}).count();
+
+db.airbnb.find({
+  "number_of_reviews": { $gte: 10 }
+}).count();
+
+db.airbnb.find({
+  number_of_reviews: {$gt:300}
+}, {
+  name:1, _id:0
+});
+
+db.airbnb.distinct("address.country");
+
+#7 Properties per country
+db.airbnb.aggregate([
+  {
+    $group: {
+      _id: "$address.country",
+      "property_count": { $sum: 1 }
+    }
+  }
+]);
+
+#8 Determine the average number of reviews by country
+db.airbnb.aggregate([{
+  $group: {
+    _id: "$address.country",
+    "avg_reviews": { $avg: "$number_of_reviews" }
+  }
+}]);
+
+#9 Minimum and maximum property prices by country
+db.airbnb.aggregate([{
+  $group: {
+    _id: "address.country",
+    "max_price": {$min: "$price"},
+    "min_price": {$max: "$price"}
+  }
+}]);
+
+#1. Obtain all the properties in Portugal
+db.airbnb.aggregate([{
+  $match: {
+    "address.country": "Portugal"
+  }
+}]);
+
+#2. Names of all the properties in Spain
+db.airbnb.aggregate([{
+  $match: {
+    "address.country": "Spain"
+  }
+}, {
+  $project: {
+    "name": true,
+    "_id": false
+  }
+}]);
+
+#3. Determine the number of properties with WiFi on each country
+db.airbnb.aggregate([{
+  $match: {
+    "amenities": {$all: ["WiFi"]}
+  }
+}, {
+  $group: {
+    _id: "$address.country",
+    "Count": {$sum: 1}
+  }
+}]);
+
+db.airbnb.aggregate([{
+  $match: {"address.country": "Spain"}
+}, {
+  $bucket: {
+    groupBy: "$price",
+    boundaries: [0, 100, 300, 500],
+    default: "500+",
+    output: {
+      "total": {$sum: 1}
+    }
+  }
+}]);
+
+#4. buckets for reviews
+db.airbnb.aggregate([{
+  $match: {"address.country": "Spain"}
+}, {
+  $bucket: {
+    groupBy: "$number_of_reviews",
+    boundaries: [0, 50, 100, 150],
+    default: "150+",
+    output: {
+      "total": {$sum: 1}
+    }
+  }
+}]);
+
+db.products.insertMany(
+  {"item": "Almonds", "price": 12, "quantity": 2},
+  {"item": "Pecans", "price": 20, "quantity": 1}
+);

@@ -1,0 +1,161 @@
+1. Names of the coaches of every team in France 2019 world cup
+match (p:Person)-[COACH_FOR]->(:Squad)-[FOR]->(:Tournament {name: "France 2019"}) return p.name
+
+Result:
+"Keira Walsh"             │
+├──────────────────────────┤
+│"Jill Scott"              │
+├──────────────────────────┤
+│"Toni Duggan"             │
+├──────────────────────────┤
+│"Karen Carney"            │
+├──────────────────────────┤
+│"Phil Neville"            │
+├──────────────────────────┤
+│"Leah Williamson"         │
+├──────────────────────────┤
+│"Mary Earps"              │
+├──────────────────────────┤
+│"Karen Bardsley"          │
+├──────────────────────────┤
+│"Demi Stokes"             │
+├──────────────────────────┤
+│"Steph Houghton"          │
+├──────────────────────────┤
+│"Abbie Mcmanus"           │
+├──────────────────────────┤
+│"Millie Bright"           │
+├──────────────────────────┤
+│"Ellen White"             │
+├──────────────────────────┤
+│"Rachel Daly"             │
+├──────────────────────────┤
+│"Alex Greenwood"          │
+├──────────────────────────┤
+│"Jodie Taylor"            │
+├──────────────────────────┤
+│"Lucy Bronze"             │
+├──────────────────────────┤
+│"Fran Kirby"              │
+├──────────────────────────┤
+│"Georgia Stanway"         │
+├──────────────────────────┤
+│"Nikita Parris"           │
+├──────────────────────────┤
+│"Carly Telford"           │
+├──────────────────────────┤
+│"Lucy Staniforth"         │
+├──────────────────────────┤
+│"Beth Mead"               │
+├──────────────────────────┤
+│"Jade Moore"              │
+├──────────────────────────┤
+│"Orapin Waenngoen"        │
+├──────────────────────────┤
+│"Khwanrudi Saengchan"     │
+├──────────────────────────┤
+│"Phonphirun Philawan"     │
+├──────────────────────────┤
+│"Srathongvian Nuengrutai" │
+├──────────────────────────┤
+│"Saowalak Pengngam"       │
+├──────────────────────────┤
+
+2. Goals scored by every team in France 2019 world cup
+match (n:Person)-[SCORED_GOAL]->(:Match)-[IN_TOURNAMENT]->(:Tournament {name: "France 2019"}), (n)-[REPRESENTS]->(t:Team) return t.name, count(t)
+
+Result:
+╒════════════════╤══════════╕
+│"t.name"        │"count(t)"│
+╞════════════════╪══════════╡
+│"Norway"        │79        │
+├────────────────┼──────────┤
+│"France"        │80        │
+├────────────────┼──────────┤
+│"Nigeria"       │58        │
+├────────────────┼──────────┤
+│"Germany"       │80        │
+├────────────────┼──────────┤
+│"Australia"     │65        │
+├────────────────┼──────────┤
+│"Italy"         │79        │
+├────────────────┼──────────┤
+│"Netherlands"   │107       │
+├────────────────┼──────────┤
+│"Canada"        │58        │
+├────────────────┼──────────┤
+│"Argentina"     │44        │
+├────────────────┼──────────┤
+│"England"       │111       │
+├────────────────┼──────────┤
+│"Spain"         │60        │
+├────────────────┼──────────┤
+│"Sweden"        │112       │
+├────────────────┼──────────┤
+│"China PR"      │57        │
+├────────────────┼──────────┤
+│"Brazil"        │65        │
+├────────────────┼──────────┤
+│"New Zealand"   │42        │
+├────────────────┼──────────┤
+│"USA"           │123       │
+├────────────────┼──────────┤
+│"Cameroon"      │59        │
+├────────────────┼──────────┤
+│"South Africa"  │43        │
+├────────────────┼──────────┤
+│"Korea Republic"│44        │
+├────────────────┼──────────┤
+│"Jamaica"       │43        │
+├────────────────┼──────────┤
+│"Japan"         │57        │
+├────────────────┼──────────┤
+│"Scotland"      │47        │
+├────────────────┼──────────┤
+│"Chile"         │41        │
+├────────────────┼──────────┤
+│"Thailand"      │44        │
+└────────────────┴──────────┘
+
+3. Total games played by team in all the tournaments (ordered descendingly)
+match (te:Team {name: "Netherlands"})-[PLAYED_IN]->(m:Match)-[IN_TOURNAMENT]->(t:Tournament) return t.name, count(t) ORDER BY count(t) DESC
+
+Result:
+╒═════════════╤══════════╕
+│"t.name"     │"count(t)"│
+╞═════════════╪══════════╡
+│"France 2019"│7         │
+├─────────────┼──────────┤
+│"Canada 2015"│4         │
+└─────────────┴──────────┘
+
+4. Game with the most number of goals in all the tournaments
+match (p:Person)-[SCORED_GOAL]->(m:Match) return m, count(m) ORDER BY count(m) DESC LIMIT 1
+
+Result:
+╒════════════════════════════════════════════════════════════╤══════════╕
+│"m"                                                         │"count(m)"│
+╞════════════════════════════════════════════════════════════╪══════════╡
+│{"date":"2019-06-11","stage":"First Stage","id":"300438226"}│41        │
+└────────────────────────────────────────────────────────────┴──────────┘
+
+5. Top scorer in all the tournaments and her number of goals
+match (p:Person)-[SCORED_GOAL]->(:Match)-[IN_TOURNAMENT]->(t:Tournament) return p.name, count(p) ORDER BY count(p) DESC limit 1
+
+Result:
+╒══════════════╤══════════╕
+│"p.name"      │"count(p)"│
+╞══════════════╪══════════╡
+│"Abby Wambach"│40        │
+└──────────────┴──────────┘
+
+6. Top scoring team in all the tournaments
+match (p:Person)-[SCORED_IN]->(:Match)<-[PLAYED_IN]-(t:Team) return t.name, count(t) ORDER BY count(t) DESC limit 1
+
+Result:
+╒════════╤══════════╕
+│"t.name"│"count(t)"│
+╞════════╪══════════╡
+│"USA"   │1508      │
+└────────┴──────────┘
+

@@ -1,0 +1,54 @@
+use Mflix;
+
+1. Total number of movies
+db.movies.count();
+
+2. List of movies where the countries where projected
+db.movies.aggregate({
+  $project: {
+    "_id": 0,
+    title: 1,
+    coutnries: 1
+  }
+});
+
+3.Total number fo movies projected on every country
+db.movies.aggregate([{
+  $unwind: "$countries"
+}, {
+  $group: {
+    _id: "$countries", 
+    "movie_count": {$sum: 1}
+  }
+}]);
+
+4. Titles of the movies with more comments (and the correspondent number of comments)
+db.movies.aggregate([{
+  $sort: {"num_mflix_comments": -1}
+}, {
+  $project: {
+    "title": 1,
+    "num_mflix_comments": 1,
+    _id: 0
+  }
+}]);
+
+5.Total number of movies per every 10-year period
+db.movies.aggregate({
+  $bucket: {
+    groupBy: "$year",
+    boundaries: [1890, 1900, 1910, 1920, 1930, 1940, 1950, 1960, 1970, 1980, 1990, 2000, 2010, 2020],
+    default: "2020+",
+    output: {
+      "total": {$sum: 1}
+    }
+  }
+});
+
+6.Total number of theatres per city
+db.theaters.aggregate([{
+  $group: {
+    _id: "$location.address.city",
+    "total":{$sum: 1}
+  }
+}]);

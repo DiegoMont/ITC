@@ -1,0 +1,36 @@
+create (:Noun{word: "tree"})
+create (:Noun{word: "plant"})
+create (:Noun{word: "forest"})
+create (:Noun{word: "leaf"})
+create (:Noun{word: "ecosystem"})
+
+create (:Noun{word: "espresso"})
+create (:Noun{word: "coffee"})
+create (:Noun{word: "beverage"})
+create (:Noun{word: "dessert"})
+create (:Noun{word: "cookie"})
+
+create (:Noun{word: "computer"})
+
+match (n {word: "tree"}), (m {word: "plant"}) create (n)-[:Semantic {relationType: "hyponymy"}]->(m)
+match (n {word: "tree"}), (m {word: "forest"}) create (n)-[:Lexical {relationType: "hymernym"}]->(m)
+match (n {word: "tree"}), (m {word: "leaf"}) create (n)-[:Lexical {relationType: "has-part"}]->(m)
+match (n {word: "tree"}), (m {word: "ecosystem"}) create (n)-[:Lexical {relationType: "part-of"}]->(m)
+
+match (n {word: "espresso"}), (m {word: "coffee"}) create (n)-[:Semantic {relationType: "hyponymy"}]->(m)
+match (n {word: "espresso"}), (m {word: "beverage"}) create (n)-[:Semantic {relationType: "meronymy"}]->(m)
+match (n {word: "espresso"}), (m {word: "dessert"}) create (n)-[:Semantic {relationType: "hyponymy"}]->(m)
+match (n {word: "espresso"}), (m {word: "cookie"}) create (n)-[:Semantic {relationType: "entailment"}]->(m)
+
+Queries for report
+//Word 1 is tree
+match (w{word:"tree"})-[:Semantic]->(x) return w.word, count(x)
+match (w{word:"tree"})-[:Lexical]->(y) return w.word, count(y)
+
+//Word 1 is espresso
+match (w{word:"espresso"})-[:Semantic]->(x) return w.word, count(x)
+match (w{word:"espresso"})-[:Lexical]->(y) return w.word, count(y)
+
+//Word 3 is computer
+match (w{word:"computer"})-[:Semantic]->(x) return w.word, count(x)
+match (w{word:"computer"})-[:Lexical]->(y) return w.word, count(y)

@@ -272,3 +272,4 @@ fastlane/test_output
 # https://github.com/johnno1962/injectionforxcode
 
 iOSInjectionProject/
+/Topico-RFID/Práctica 3/BDrfid/nbproject/private/

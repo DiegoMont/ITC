@@ -7,9 +7,27 @@
 
 import UIKit
 
-class ProfesTableViewController: UITableViewController {
+class ProfesTableViewController: UITableViewController, UISearchResultsUpdating {
+  
+  let direccion = "http://martinmolina.com.mx/202111/equipo5/data/palabras.json";
   
   var datos = ["Juana Julieta", "Luis José", "Anatoly Markov"];
+  var nuevoArray:[Any]?
+  var datosFiltrados:[Any]?
+  let searchController = UISearchController(searchResultsController: nil)
+  
+  func updateSearchResults(for searchController: UISearchController) {
+    if searchController.searchBar.text! == "" {
+      datosFiltrados = nuevoArray;
+    } else {
+      datosFiltrados = nuevoArray!.filter(){
+        let objeto = $0 as! [String: Any]
+        let s:String = objeto["palabra"] as! String
+        return s.lowercased().contains(searchController.searchBar.text!.lowercased())
+      }
+    }
+    self.tableView.reloadData();
+  }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,6 +37,24 @@ class ProfesTableViewController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
+      
+      if let url = URL(string: direccion){
+        do {
+          let datosCrudos = try? Data(contentsOf: url);
+          nuevoArray = try! JSONSerialization.jsonObject(with: datosCrudos!) as? [Any];
+          datosFiltrados = nuevoArray!;
+          
+          searchController.searchResultsUpdater = self;
+          searchController.dimsBackgroundDuringPresentation = false;
+          
+          tableView.tableHeaderView = searchController.searchBar;
+          
+        } catch {
+          print("content could not be loaded");
+        }
+      } else {
+        print("the url was wrong");
+      }
     }
 
     // MARK: - Table view data source
@@ -30,7 +66,7 @@ class ProfesTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-      return datos.count;
+      return datosFiltrados!.count;
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -41,7 +77,9 @@ class ProfesTableViewController: UITableViewController {
         if(cell == nil){
           cell = UITableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: "zelda");
         }
-        cell.textLabel?.text = datos[indexPath.row];
+      let objeto = datosFiltrados![indexPath.row] as! [String: Any];
+      let s:String = objeto["palabra"] as! String;
+      cell.textLabel?.text = s;
 
         return cell
     }
@@ -89,7 +127,9 @@ class ProfesTableViewController: UITableViewController {
         // Pass the selected object to the new view controller.
       let siguienteVista = segue.destination as! ViewController;
       let indice = self.tableView.indexPathForSelectedRow?.row;
-      siguienteVista.profesorEnviado = datos[indice!]
+      let objeto = datosFiltrados![indice!] as! [String: Any];
+      let s:String = objeto["palabra"] as! String;
+      siguienteVista.profesorEnviado = s
     }
 
 }

@@ -18,15 +18,30 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
   override func viewDidLoad() {
     super.viewDidLoad()
     // Do any additional setup after loading the view.
-    let punto = CLLocationCoordinate2DMake(19.284094912672675, -99.13629095976724);
+    locationManager.delegate = self;
+    locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation;
+    locationManager.requestWhenInUseAuthorization();
+    let punto = CLLocationCoordinate2DMake(19.295427868882417, -99.13266686009915);
     let ccm = MKPointAnnotation();
     ccm.coordinate = punto;
-    ccm.title = "Montahaus";
+    ccm.title = "Montacueva";
     ccm.subtitle = "Saquen las chelas";
-    mapa.region = MKCoordinateRegion(center: punto, latitudinalMeters: 1000, longitudinalMeters: 1000);
+    mapa.region = MKCoordinateRegion(center: punto, latitudinalMeters: 2000, longitudinalMeters: 2000);
     mapa.addAnnotation(ccm);
+    mapa.showsCompass = true;
+    //mapa.mapType = MKMapType.hybrid;
+    mapa.showsTraffic = true;
   }
-
-
+  
+  func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+    if(status == .authorizedWhenInUse){
+      locationManager.startUpdatingLocation();
+      mapa.showsUserLocation = true;
+    } else {
+      locationManager.stopUpdatingLocation();
+      mapa.showsUserLocation = false;
+    }
+  }
+  //19.28398351707071, -99.13628023112184
 }
 

@@ -11,14 +11,23 @@ package base.datos.swing;
  */
 
 import java.sql.*;
+import com.thingmagic.*;
+import java.lang.reflect.Array;
+import java.util.Vector;
+
 public class GUI extends javax.swing.JFrame {
+    
+    public static final int LENGTH_EPC = 24;
     
     Connection conn;
     PreparedStatement pre;
-    String epc = "";
-    String producto = "";
-    String sector = "";
-    String fabricante = "";
+    private String epc = "";
+    private String producto = "";
+    private String sector = "";
+    private String fabricante = "";
+    
+    private Reader reader;
+    private boolean isReaderConnected;
 
     /**
      * Creates new form GUI
@@ -26,6 +35,8 @@ public class GUI extends javax.swing.JFrame {
     public GUI() {
         initComponents();
         initDBComponents();
+        
+        isReaderConnected = false;
     }
 
     /**
@@ -63,6 +74,20 @@ public class GUI extends javax.swing.JFrame {
         jTextFieldSector1 = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
         jTextFieldFabricante1 = new javax.swing.JTextField();
+        jPanel4 = new javax.swing.JPanel();
+        jButtonReadTag = new javax.swing.JButton();
+        jTextFieldEPCWrite = new javax.swing.JTextField();
+        jButtonWriteTag = new javax.swing.JButton();
+        jLabel14 = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        jLabelReadPower = new javax.swing.JLabel();
+        jLabelWritePower = new javax.swing.JLabel();
+        jTextFieldReadPower = new javax.swing.JTextField();
+        jTextFieldWritePower = new javax.swing.JTextField();
+        jButtonSetPower = new javax.swing.JButton();
+        jTextFieldPuertoUSB = new javax.swing.JTextField();
+        jButtonConnect = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jButtonExit = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -154,7 +179,7 @@ public class GUI extends javax.swing.JFrame {
                     .addComponent(jTextFieldFabricante2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButtonEnviarSQL)
-                .addContainerGap(38, Short.MAX_VALUE))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Actualización de Base de Datos", jPanel1);
@@ -254,10 +279,142 @@ public class GUI extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel13)
                     .addComponent(jTextFieldFabricante1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 38, Short.MAX_VALUE))
+                .addGap(0, 34, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Lectura de Base de datos", jPanel2);
+
+        jButtonReadTag.setText("Leer Tag");
+        jButtonReadTag.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonReadTagActionPerformed(evt);
+            }
+        });
+
+        jTextFieldEPCWrite.setToolTipText("AAAABBBBCCCCDDDD22224444");
+        jTextFieldEPCWrite.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldEPCWriteActionPerformed(evt);
+            }
+        });
+
+        jButtonWriteTag.setText("Escribir en Tag");
+
+        jLabel14.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel14.setText("Potencia de Lectura y Escritura");
+
+        jLabel15.setText("Lectura (dBm)");
+
+        jLabel16.setText("Escritura (dBm)");
+
+        jLabelReadPower.setText("20");
+
+        jLabelWritePower.setText("23");
+
+        jTextFieldReadPower.setToolTipText("Read Power");
+
+        jTextFieldWritePower.setToolTipText("Write Power");
+
+        jButtonSetPower.setText("Actualizar");
+        jButtonSetPower.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonSetPowerActionPerformed(evt);
+            }
+        });
+
+        jTextFieldPuertoUSB.setText("COM3");
+
+        jButtonConnect.setText("Conectar al lector");
+        jButtonConnect.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonConnectActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addGap(62, 62, 62)
+                                .addComponent(jLabel15))
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addGap(88, 88, 88)
+                                .addComponent(jLabelReadPower)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel16, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                                .addComponent(jLabelWritePower)
+                                .addGap(28, 28, 28))))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel14)))
+                .addGap(99, 99, 99))
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(35, 35, 35)
+                        .addComponent(jTextFieldReadPower, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(32, 32, 32)
+                        .addComponent(jTextFieldWritePower, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(133, 133, 133)
+                        .addComponent(jButtonSetPower)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                        .addComponent(jButtonWriteTag)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTextFieldEPCWrite))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jButtonReadTag)
+                        .addContainerGap(290, Short.MAX_VALUE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jTextFieldPuertoUSB)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButtonConnect)
+                        .addGap(14, 14, 14))))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel14)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel15)
+                    .addComponent(jLabel16))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelReadPower)
+                    .addComponent(jLabelWritePower))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextFieldReadPower, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldWritePower, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButtonSetPower)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextFieldPuertoUSB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonConnect))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextFieldEPCWrite, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonWriteTag))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButtonReadTag)
+                .addGap(14, 14, 14))
+        );
+
+        jTabbedPane1.addTab("Funcionalidades M6E Nano", jPanel4);
 
         jButtonExit.setText("Salir de la aplicación");
         jButtonExit.addActionListener(new java.awt.event.ActionListener() {
@@ -411,8 +568,294 @@ public class GUI extends javax.swing.JFrame {
           System.exit(0);
     }//GEN-LAST:event_jButtonExitActionPerformed
 
+    private void jButtonReadTagActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonReadTagActionPerformed
+        int bank = 1, address = 2, count = 0;
+        try {            
+            Gen2.ReadData readOp = new Gen2.ReadData(Gen2.Bank.getBank(bank), address, (byte)count);
+            short[] readData = (short[]) reader.executeTagOp(readOp, null);
+                       
+            String str1 = "";
+            for (int i = 0; i < readData.length; i++){
+                str1 = str1 + String.format("%04x", readData[i]);
+            }
+            show("EPC(" + Integer.toString(readData.length) + "): 0x" + str1.toUpperCase());
+            
+        } catch (ReaderException re) {
+            show("Error reading memory of tag: " + re.getMessage());
+        }  
+        
+    }//GEN-LAST:event_jButtonReadTagActionPerformed
+
+    private void jTextFieldEPCWriteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldEPCWriteActionPerformed
+        int bank = 1, address = 2;
+        final String EPCInputText = jTextFieldEPCWrite.getText();
+        
+        short[] values = parseValueWord(EPCInputText);
+        Gen2.Bank bnk = Gen2.Bank.getBank(bank);
+        try {            
+            Gen2.WriteData write = new Gen2.WriteData(bnk, address, values);
+            reader.executeTagOp(write, null);
+            
+            show("EPC escrito con: 0x" + EPCInputText);
+        } catch (ReaderException e) {
+            show("Error writing memory of tag: " + e.getMessage());
+        }
+    }//GEN-LAST:event_jTextFieldEPCWriteActionPerformed
+
+    private void jButtonConnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConnectActionPerformed
+        final String readerURI = "tmr:///" + jTextFieldPuertoUSB.getText();
+        int[] antennaList = new int[1];
+        antennaList[0] = 1;
+        try {
+            reader = Reader.create(readerURI);
+            reader.connect();
+            
+            SimpleReadPlan plan = new SimpleReadPlan(antennaList, TagProtocol.GEN2, null, 1000);
+            reader.paramSet(TMConstants.TMR_PARAM_READ_PLAN, plan);
+            
+            // Se establece la región de operación: NA2 (North America)
+            Reader.Region[] supportedRegions = (Reader.Region[]) reader.paramGet(TMConstants.TMR_PARAM_REGION_SUPPORTEDREGIONS);
+            reader.paramSet("/reader/region/id", supportedRegions[0]);
+            
+            //Se selecciona la antena 1 para operaciones del tag
+            reader.paramSet("/reader/tagop/antenna", antennaList[0]);
+            
+            isReaderConnected = true;
+            
+            show("¡Conexión exitosa al lector M6e Nano! \n");
+        } catch (ReaderException e) {
+            show("Reader Exception : " + e.getMessage());      
+        } catch (Exception e) {
+            show("Exception : " + e.getMessage());    
+        }
+        setPowerTags();
+    }//GEN-LAST:event_jButtonConnectActionPerformed
+
+    private void jButtonSetPowerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSetPowerActionPerformed
+        final String selRead = "/reader/radio/readPower";
+        String valRead = jTextFieldReadPower.getText();
+        Object readPowerObject = parseValue(valRead);
+        
+        final String selWrite = "/reader/radio/writePower";
+        String valWrite = jTextFieldWritePower.getText();
+        Object writePowerObject = parseValue(valWrite);
+        
+        try {
+            reader.paramSet(selRead, readPowerObject);
+            reader.paramSet(selWrite, writePowerObject);
+            show("Parámetros actualizados");
+        } catch(ReaderException e) {
+            show("Reader Exception : " + e.getMessage());
+        }
+        
+        setPowerTags();
+    }//GEN-LAST:event_jButtonSetPowerActionPerformed
+
+    private void setPowerTags(){
+        try {
+            final String readParam = "/reader/radio/readPower";
+            Object readVal = reader.paramGet(readParam);
+            String readPower = unparseValue(readVal);
+            jLabelReadPower.setText(readPower.substring(0, readPower.length()-1));
+            
+            final String writeParam = "/reader/radio/writePower";
+            Object writeVal = reader.paramGet(writeParam);
+            String writePower = unparseValue(writeVal);
+            jLabelWritePower.setText(writePower.substring(0, writePower.length()-1));
+        } catch(ReaderException e){
+            show("Reader Exception : " + e.getMessage());
+        }
+    }
+    
     public void show(String response){
         jTextAreaShow.append(String.format("%s\n", response));
+    }
+    
+    static Object parseValue(String s) {
+        TagFilter tfilter;
+        s = s.toLowerCase();
+        
+        if (s.equalsIgnoreCase("null"))
+            return null;
+        else if (s.equalsIgnoreCase("true"))
+            return new Boolean(true);
+        else if (s.equalsIgnoreCase("false"))
+            return new Boolean(false);
+        
+        // Array of ints or arrays of ints
+        if (s.startsWith("[") && s.endsWith("]")) {
+            String strings[];
+        
+            if (s.indexOf('[',1) != -1) {
+                int intArrs[][];
+                Vector<int[]> intArrVec;
+                int start, end;
+                intArrVec = new Vector<int[]>();
+            
+                start = s.indexOf('[', 1);
+                while (start != -1) {
+                    int[] ints;
+                    end = s.indexOf(']', start);
+                    ints = (int[])parseValue(s.substring(start,end + 1));
+                    intArrVec.add(ints);
+                    start = s.indexOf('[', end);
+                }
+                return intArrVec.toArray(new int[intArrVec.size()][]);
+            } else {
+                int ints[];
+
+                if (s.length() > 2)
+                    strings = s.substring(1, s.length() - 1).split(",");
+                else
+                    strings = new String[0];
+
+                ints = new int[strings.length];
+                for (int i = 0; i < strings.length; i++) {
+                    ints[i] = Integer.decode(strings[i]);
+                }
+                return ints;
+            }
+        }
+  
+    if (s.startsWith("simplereadplan:"))
+    {
+      int cindex;
+      String sub;
+      
+      sub = s.substring(15);
+      if (!sub.startsWith("[tagprotocol"))
+        return new SimpleReadPlan((int[]) parseValue(sub), TagProtocol.GEN2);
+
+      TagProtocol t;
+      int[] antennas;
+      TagFilter filter = null;
+      int weight = 1000;
+
+      cindex = sub.indexOf(',');        
+        
+      t = (TagProtocol) parseValue(sub.substring(1, cindex));
+
+      sub = sub.substring(cindex + 1, sub.length() - 1);
+
+      cindex = sub.indexOf(']');
+      antennas = (int[]) parseValue(sub.substring(0, cindex + 1));
+      
+      cindex = sub.indexOf(',', cindex);
+      if (cindex != -1)
+      {
+        sub = sub.substring(cindex + 1);
+        
+        if (sub.startsWith("EPC:"))
+          filter = new TagData(sub);
+        else
+          filter = (TagFilter) parseValue(sub);
+      }
+
+      return new SimpleReadPlan(antennas, t, filter, weight);
+    }
+    
+    // "MultiReadPlan:[
+    if (s.startsWith("multireadplan:"))
+    {
+      String sub, newsub;
+      Vector<ReadPlan> rps = new Vector<ReadPlan>();
+      int len, count, first, i;
+      char at;
+      
+      sub = s.substring(15);
+      while (true)
+      {
+        // Find the matching end-bracket of the subplan
+        len = sub.length();
+        count = 1;
+        i = sub.indexOf('[') + 1;
+        while (count != 0)
+        {
+          at = sub.charAt(i);
+          
+          if (at == '[')
+            count++;
+          else if (at == ']')
+            count--;
+          i++;
+        }
+        newsub = sub.substring(0, i);
+        
+        rps.add((ReadPlan) parseValue(newsub));
+
+        i = sub.indexOf(',',i);
+        if (i == -1)
+          break;
+        
+        sub = sub.substring(i+1);
+      }
+      return new MultiReadPlan(rps.toArray(new ReadPlan[rps.size()]));
+    }
+    
+    if (s.startsWith("tagprotocol:"))
+    {
+      return TagProtocol.getProtocol(s.substring(12));
+    }
+
+    try
+    {
+      Integer i = (Integer)(int)(long)Long.decode(s);
+      return i;
+    }
+    catch (NumberFormatException ne)
+    {
+    }
+
+    try
+    {
+      TagFilter f = new TagData(s);;
+      return f;
+    }
+    catch (Exception e)
+    {
+    }
+
+    return s;
+  }
+    
+    private short[] parseValueWord(String s){
+        short[] words = new short[LENGTH_EPC / 4];
+        for(int i = 0; i < words.length; i+=4)
+            words[i/4] = Short.parseShort(s.substring(i, i+4), 16);
+        return words;
+    }
+    
+    static String unparseValue(Object o){
+
+        if (o == null)
+            return "null";
+    
+        if (o.getClass().isArray()) {
+            int l = Array.getLength(o);
+            StringBuilder sb = new StringBuilder();
+            sb.append("[");
+            for (int i = 0; i < l; i++) {
+                sb.append(unparseValue(Array.get(o, i)));
+                if (i + 1 < l)
+                    sb.append(",");
+            }
+            sb.append("]");
+            return sb.toString();
+        } else if (o instanceof SimpleReadPlan) {
+            SimpleReadPlan s = (SimpleReadPlan) o;
+
+            return String.format("SimpleReadPlan:[%s,%s,%s,%d]",
+                           unparseValue(s.protocol),
+                           unparseValue(s.antennas),
+                           unparseValue(s.filter),
+                           s.weight);
+        } else if (o instanceof TagProtocol) {
+            return String.format("TagProtocol:%s", o);
+        } else if (o instanceof String) {
+            return "string: " + (String)o;
+        }
+
+        return o.toString();
     }
 
     /**
@@ -451,14 +894,21 @@ public class GUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButtonConnect;
     private javax.swing.JButton jButtonEnviarSQL;
     private javax.swing.JButton jButtonExit;
     private javax.swing.JButton jButtonLeeSQL;
+    private javax.swing.JButton jButtonReadTag;
+    private javax.swing.JButton jButtonSetPower;
+    private javax.swing.JButton jButtonWriteTag;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -467,19 +917,26 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JLabel jLabelReadPower;
+    private javax.swing.JLabel jLabelWritePower;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextArea jTextAreaShow;
     private javax.swing.JTextField jTextFieldEPC1;
     private javax.swing.JTextField jTextFieldEPC2;
+    private javax.swing.JTextField jTextFieldEPCWrite;
     private javax.swing.JTextField jTextFieldFabricante1;
     private javax.swing.JTextField jTextFieldFabricante2;
     private javax.swing.JTextField jTextFieldProducto1;
     private javax.swing.JTextField jTextFieldProducto2;
+    private javax.swing.JTextField jTextFieldPuertoUSB;
+    private javax.swing.JTextField jTextFieldReadPower;
     private javax.swing.JTextField jTextFieldSector1;
     private javax.swing.JTextField jTextFieldSector2;
+    private javax.swing.JTextField jTextFieldWritePower;
     // End of variables declaration//GEN-END:variables
 }

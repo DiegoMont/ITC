@@ -19,8 +19,7 @@ public class GUI extends javax.swing.JFrame {
     
     public static final int LENGTH_EPC = 24;
     
-    Connection conn;
-    PreparedStatement pre;
+    private Connection conn;
     private String epc = "";
     private String producto = "";
     private String sector = "";
@@ -484,7 +483,7 @@ public class GUI extends javax.swing.JFrame {
             String password = "rfid1234";
             
             conn = DriverManager.getConnection(url, username, password);
-            pre = conn.prepareStatement(
+            PreparedStatement pre = conn.prepareStatement(
                 "CREATE TABLE IF NOT EXISTS rfid.Items_rfid(" +
                     "id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY," +
                     "tagEPC CHAR(24) CHARACTER SET utf8mb4 NOT NULL," +
@@ -510,7 +509,7 @@ public class GUI extends javax.swing.JFrame {
             sector = jTextFieldSector2.getText();
             fabricante = jTextFieldFabricante2.getText();
 
-            pre = conn.prepareStatement("INSERT INTO rfid.Items_rfid(tagEPC, producto, sector, fabricante) VALUES (UPPER(?), ?, ?, ?)");
+            PreparedStatement pre = conn.prepareStatement("INSERT INTO rfid.Items_rfid(tagEPC, producto, sector, fabricante) VALUES (UPPER(?), ?, ?, ?)");
             pre.setString(1, epc);
             pre.setString(2, producto);
             pre.setString(3, sector);
@@ -610,7 +609,7 @@ public class GUI extends javax.swing.JFrame {
             reader = Reader.create(readerURI);
             reader.connect();
             
-            SimpleReadPlan plan = new SimpleReadPlan(antennaList, TagProtocol.GEN2, null, 1000);
+            SimpleReadPlan plan = new SimpleReadPlan(antennaList, TagProtocol.GEN2, null, null, 1000);
             reader.paramSet(TMConstants.TMR_PARAM_READ_PLAN, plan);
             
             // Se establece la región de operación: NA2 (North America)
@@ -633,11 +632,11 @@ public class GUI extends javax.swing.JFrame {
 
     private void jButtonSetPowerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSetPowerActionPerformed
         final String selRead = "/reader/radio/readPower";
-        String valRead = jTextFieldReadPower.getText();
+        String valRead = jTextFieldReadPower.getText() + "00";
         Object readPowerObject = parseValue(valRead);
         
         final String selWrite = "/reader/radio/writePower";
-        String valWrite = jTextFieldWritePower.getText();
+        String valWrite = jTextFieldWritePower.getText() + "00";
         Object writePowerObject = parseValue(valWrite);
         
         try {

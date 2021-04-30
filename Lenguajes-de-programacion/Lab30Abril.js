@@ -1,3 +1,6 @@
+// Diego Montaño Martínez
+// Eduardo Harari
+
 /*
 Ejercicio 01:
 Escribe las siguientes funciones como funciones puras y función de primera clase:

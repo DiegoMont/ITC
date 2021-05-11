@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/instructions" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dip"
+            android:text="Nombre" />
+
+        <EditText
+            android:id="@+id/student_name"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top"
+            android:hint="Introduce el nombre del estudiante"
+            android:inputType="text"
+            android:singleLine="true"
+            android:text=""
+            android:importantForAutofill="no" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dip"
+            android:text="Matrícula" />
+        <EditText
+            android:id="@+id/student_id"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top"
+            android:hint="Matrícula"
+            android:inputType="text"
+            android:singleLine="true"
+            android:text=""
+            android:importantForAutofill="no" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dip"
+            android:text="Carrera" />
+
+        <EditText
+            android:id="@+id/student_major"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top"
+            android:hint="ITCrack"
+            android:inputType="text"
+            android:singleLine="true"
+            android:text=""
+            android:importantForAutofill="no" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dip"
+            android:text="e-mail" />
+
+        <EditText
+            android:id="@+id/student_mail"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top"
+            android:hint="Correo"
+            android:inputType="text"
+            android:singleLine="true"
+            android:text=""
+            android:importantForAutofill="no" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/write_tag"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/write_to_tag_button_label" />
+</LinearLayout>

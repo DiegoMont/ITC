@@ -1,0 +1,53 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%   QUERIES DE EJERCICIOS   %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%ejercicioUno(1500, 2700).
+%ejercicioDos(1, 100, 0).
+%ejercicioTres(21, 2100, 0).
+%ejercicioCuatro(1, 5, 0).
+%ejercicioCinco(7).
+
+isDivisibleEntreSiete(X):-mod(X,7) =:= 0.
+isMultiploDeCinco(X):-mod(X,5) =:= 0.
+
+isEven(X):- mod(X,2) =:= 0.
+isOdd(X):- mod(X,2) =:= 1.
+
+ejercicioUno(I, F):- I > F, nl.
+ejercicioUno(I, F):- 
+    I =< F,
+    isMultiploDeCinco(I),
+    isDivisibleEntreSiete(I),
+    write(I),
+    nl,
+    AUX is I + 1,
+    ejercicioUno(AUX, F).
+
+ejercicioUno(I, F):- 
+    I =< F,
+    AUX is I + 1,
+    ejercicioUno(AUX, F).
+
+ejercicioDos(I, F, C):- I > F, write(C), nl.
+ejercicioDos(I, F, C):- I =< F, isEven(I), AUX is C + 1, AUX2 is I + 1, ejercicioDos(AUX2, F, AUX).
+ejercicioDos(I, F, C):- I =< F, AUX2 is I + 1, ejercicioDos(AUX2, F, C).
+
+ejercicioTres(I, F, C):- I > F, write(C), nl.
+ejercicioTres(I, F, C):- I =< F, isOdd(I), AUX is C + 1, AUX2 is I + 1, ejercicioTres(AUX2, F, AUX).
+ejercicioTres(I, F, C):- I =< F, AUX2 is I + 1, ejercicioTres(AUX2, F, C).
+
+ejercicioCuatro(I, F, A):- I > F, write(A), nl.
+ejercicioCuatro(I, F, A):- I =< F, AUX is 2 * I, AUX2 is AUX + A, AUX3 is I + 1, ejercicioCuatro(AUX3, F, AUX2).
+
+ejercicioCinco(X):-
+    X =:= 1,
+    write(1),
+    nl.
+
+ejercicioCinco(X):-
+    X > 1,
+    R is X * X,
+    write(R),
+    nl,
+    Y is X - 1,
+    ejercicioCinco(Y).

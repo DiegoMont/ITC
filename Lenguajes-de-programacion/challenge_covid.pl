@@ -66,11 +66,9 @@ dolor_de_cabeza(covid).
 covid([], COVID):-COVID is 0.
 covid([H|T], COVID):-
     covid(T, Aux),
-   % (es_covid(H)->  
-      COVID is Aux + 1
-      %write(" "))
-    %COVID is Aux,
-    .
+    (es_covid(H)->  
+      COVID is Aux + 1;
+      COVID is Aux).
 
 % Influenza
 influenza([], R):-write(R).
@@ -101,6 +99,6 @@ diagnosticar():-
   write("Cuando haya escrito todos sus sintomas escriba: listo"), nl,
   imprimir_sintomas([dolor_pecho, dificultad_respirar, perdida_olfato]),
   add_sintoma(Sintomas),
-  write(Sintomas),nl,
   covid(Sintomas, COVID),
+  write(Sintomas),nl,
   write(COVID).

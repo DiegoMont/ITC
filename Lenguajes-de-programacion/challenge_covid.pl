@@ -71,20 +71,20 @@ covid([H|T], COVID):-
       COVID is Aux).
 
 % Influenza
-influenza([], R):-write(R).
-influenza([H|T], R):-
+influenza([], INFLUENZA):-INFLUENZA is 0.
+influenza([H|T], INFLUENZA):-
+    influenza(T, Aux),
     (es_influenza(H)->
-        Aux is R + 1;
-        Aux is R),
-    influenza(T, Aux).
+        INFLUENZA is Aux + 1;
+        INFLUENZA is Aux).
 
 % Resfriado
-resfriado([], R):-write(R).
-resfriado([H|T], R):-
+resfriado([], RESFRIADO):-RESFRIADO is 0.
+resfriado([H|T], RESFRIADO):-
+    resfriado(T, Aux),
     (es_resfriado(H)->
-        Aux is R + 1;
-        Aux is R),
-    resfriado(T, Aux).
+        RESFRIADO is Aux + 1;
+        RESFRIADO is Aux).
 
 add_sintoma(Sintomas):-read(S),add_sintoma(S, Sintomas).
 add_sintoma(listo, []):-!.
@@ -97,8 +97,17 @@ diagnosticar():-
   write("Ingrese su nombre:"),nl,
   write("De la lista de síntomas que mostraremos a continuación, escriba los que apliquen a su caso."), nl,
   write("Cuando haya escrito todos sus sintomas escriba: listo"), nl,
-  imprimir_sintomas([dolor_pecho, dificultad_respirar, perdida_olfato]),
+  imprimir_sintomas([dolor_pecho, dificultad_respirar, perdida_olfato, decoloracion_dedos, fatiga, congestion_nasal, tos, fiebre, irritacion_garganta, cuerpo_cortado, dolor_de_cabeza]),
   add_sintoma(Sintomas),
   covid(Sintomas, COVID),
+  influenza(Sintomas, INFLUENZA),
+  resfriado(Sintomas, RESFRIADO),
   write(Sintomas),nl,
-  write(COVID).
+  write("Síntomas COVID "), write(COVID), nl,
+  write("Síntomas Influenza "), write(INFLUENZA), nl,
+  write("Síntomas resfriado "), write(RESFRIADO), nl,
+  (COVID>INFLUENZA, COVID>RESFRIADO)-> write("Diagnosticamos que tiene COVID-19");
+  (INFLUENZA>COVID, INFLUENZA>RESFRIADO)->write("Diagnosticamos que tiene Influenza");
+  (RESFRIADO>COVID, RESFRIADO>INFLUENZA)->write("Diagnosticamos que tiene resfriado");
+  (COVID =:= RESFRIADO, RESFRIADO=:=INFLUENZA)->write("No es posible hacer un diagnóstico");
+  write("Usted no cuenta con ningun síntoma de estas enfermedades").

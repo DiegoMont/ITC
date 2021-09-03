@@ -35,7 +35,6 @@ void crearProcesosHijos(pid_t* pids, int numProcesosHijos){
     } else if(pid == 0){
       printf("Estamos en el proceso hijo con PID = %d y su padre es PPID = %d \n", getpid(), getppid());
       exit(0);
-      break;
     }
   }
 }

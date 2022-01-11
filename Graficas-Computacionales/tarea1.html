@@ -1,0 +1,91 @@
+<!--
+Diego Montaño
+A01651308
+-->
+
+<html>
+  <head>
+    <script>
+        const draw = function() {
+            const canvas = document.querySelector("canvas");
+            let ctx;
+            if(canvas.getContext)
+                ctx = canvas.getContext("2d");
+            
+            drawBobaFett(ctx);
+        }
+
+        const drawBobaFett = function(ctx) {
+            const LIGHT_GREEN = '#568925';
+            const LIGHT_RED = '#DE1021';
+            const LIGHT_BLACK = '#232123';
+            const DARK_GREEN = "#315521";
+            const DARK_RED = "#891010";
+            const DARK_BLACK = "#000";
+
+            const TOTAL_WIDTH = 400;
+            const TOTAL_HEIGHT = 400;
+            const CANVAS_HEIGHT = 500;
+
+            const OFFSET = 10;
+
+            const UPPER_PART_HEIGHT = TOTAL_HEIGHT * 0.23;
+
+            const ELLIPSE_X_RADIUS = TOTAL_WIDTH * 0.4;
+            const ELLIPSE_Y_RADIUS = TOTAL_HEIGHT * 0.6;
+
+            const HUD_OFFSET = TOTAL_WIDTH * 0.05;
+            const HUD_HEIGHT = OFFSET + TOTAL_HEIGHT * 0.55;
+
+            ctx.fillStyle = LIGHT_RED;
+            ctx.fillRect(OFFSET, OFFSET, TOTAL_WIDTH / 2, TOTAL_HEIGHT);
+          
+            ctx.fillStyle = DARK_RED;
+            ctx.fillRect(OFFSET + TOTAL_WIDTH / 2, OFFSET, TOTAL_WIDTH / 2, TOTAL_HEIGHT);
+
+            ctx.fillStyle = LIGHT_GREEN;
+            ctx.fillRect(OFFSET, OFFSET, TOTAL_WIDTH / 2, UPPER_PART_HEIGHT);
+            ctx.beginPath();
+            ctx.ellipse(OFFSET, OFFSET + TOTAL_HEIGHT, ELLIPSE_X_RADIUS, ELLIPSE_Y_RADIUS, 0, degToRadian(180), 0);
+            ctx.fill();
+
+            ctx.fillStyle = DARK_GREEN;
+            ctx.fillRect(OFFSET + TOTAL_WIDTH / 2, OFFSET, TOTAL_WIDTH / 2, UPPER_PART_HEIGHT);
+            ctx.beginPath();
+            ctx.ellipse(OFFSET + TOTAL_WIDTH, OFFSET + TOTAL_HEIGHT, ELLIPSE_X_RADIUS, ELLIPSE_Y_RADIUS, 0, degToRadian(180), 0);
+            ctx.fill();
+
+            ctx.fillStyle = LIGHT_BLACK;
+            ctx.beginPath();
+            ctx.moveTo(OFFSET + HUD_OFFSET, OFFSET + UPPER_PART_HEIGHT + HUD_OFFSET);
+            ctx.lineTo(OFFSET + TOTAL_WIDTH / 2, OFFSET + UPPER_PART_HEIGHT + HUD_OFFSET);
+            ctx.lineTo(OFFSET + TOTAL_WIDTH / 2, OFFSET + TOTAL_HEIGHT);
+            ctx.lineTo(OFFSET + TOTAL_WIDTH / 2 - 1.25*HUD_OFFSET, OFFSET + TOTAL_HEIGHT);
+            ctx.lineTo(OFFSET + TOTAL_WIDTH / 2 - 1.5*HUD_OFFSET, HUD_HEIGHT);
+            ctx.lineTo(OFFSET + HUD_OFFSET, OFFSET + UPPER_PART_HEIGHT + HUD_OFFSET);
+            ctx.fill();
+
+            ctx.fillStyle = DARK_BLACK;
+            ctx.beginPath();
+            ctx.moveTo(OFFSET + TOTAL_WIDTH, OFFSET + UPPER_PART_HEIGHT + HUD_OFFSET);
+            ctx.lineTo(OFFSET + TOTAL_WIDTH / 2, OFFSET + UPPER_PART_HEIGHT + HUD_OFFSET);
+            ctx.lineTo(OFFSET + TOTAL_WIDTH / 2, OFFSET + TOTAL_HEIGHT);
+            ctx.lineTo(OFFSET + TOTAL_WIDTH / 2 + 1.25*HUD_OFFSET, OFFSET + TOTAL_HEIGHT);
+            ctx.lineTo(OFFSET + TOTAL_WIDTH / 2 + 1.5*HUD_OFFSET, HUD_HEIGHT);
+            ctx.lineTo(OFFSET + TOTAL_WIDTH, OFFSET + UPPER_PART_HEIGHT + HUD_OFFSET);
+            ctx.fill();
+
+            ctx.fillStyle = "#FFF";
+            ctx.fillRect(0, 0, OFFSET, CANVAS_HEIGHT);
+            ctx.fillRect(OFFSET + TOTAL_WIDTH, 0, TOTAL_WIDTH, CANVAS_HEIGHT);
+        }
+
+        const degToRadian = function(degrees) {
+            return degrees * Math.PI / 180;
+        }
+    </script>
+  </head>
+  <body onload="draw()">
+    <canvas width="500" height="500">Boba Fett</canvas>
+  </body>
+</html>

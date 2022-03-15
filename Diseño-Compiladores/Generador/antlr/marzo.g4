@@ -3,7 +3,12 @@ grammar marzo;
 program : expression+ ;
 
 expression: 
-    expression '+' expression #suma
+    expression '+' expression # suma
+    | expression '-' expression # resta
+    | expression '*' expression # multiplicación
+    | expression '/' expression # división
+    | expression '<' expression # menor que
+    | expression '>' expression # mayor que
     | Numero                  #primaria
     ;
 

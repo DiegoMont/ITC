@@ -1,6 +1,10 @@
 grammar marzo;
 
-program : expression+ ;
+program : statement+ ;
+
+statement:
+    Variable '=' expression #asignacion
+    ;
 
 expression: 
     expression '+' expression #suma
@@ -15,4 +19,5 @@ expression:
 
 // A continuación los tokens (comienzan con mayúscula)
 Numero : [0-9]+;
+Variable : [a-zA-Z]+;
 WS : [ \t\n\r]+ -> skip ;

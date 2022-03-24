@@ -1,3 +1,10 @@
+const sqlite3 = require('sqlite3').verbose();
+const db = new sqlite3.Database('./bicicletas.dbf', (error) => {
+    if(error)
+        return console.error(error.message);
+    console.log('Database connected successfully');
+});
+
 let Bicicleta = function(id, color, modelo, ubicacion){
     this.id = id
     this.color = color
@@ -5,14 +12,23 @@ let Bicicleta = function(id, color, modelo, ubicacion){
     this.ubicacion = ubicacion
 }
 
+db.serialize(function() {
+    db.run("CREATE TABLE IF NOT EXISTS Bicicleta(id INTEGER NOT NULL, color TEXT NOT NULL, modelo TEXT NOT NULL, longitud REAL NOT NULL, latitud REAL NOT NULL)");
+});
+
 Bicicleta.prototype.toString = function(){
     return `Id: ${this.id}, color: ${this.color}`
 }
 
-Bicicleta.allBicis = []
-
 Bicicleta.add = function(aBici){
-    Bicicleta.allBicis.push(aBici)
+    db.serialize(function() {
+        db.run(`INSERT INTO Bicicleta VALUES(${aBici.id}, '${aBici.color}', '${aBici.modelo}', ${aBici.ubicacion[1]}, ${aBici.ubicacion[0]})`);
+        db.get(`SELECT * FROM Bicicleta WHERE id = ${aBici.id}`, function(err, row) {
+            if(err)
+                throw new Error(`Falló el insert`);
+            console.log(row);
+        });
+    });
 }
 
 //Añadir un par de bicis:
@@ -24,23 +40,22 @@ Bicicleta.add(b2)
 
 //Eliminar
 Bicicleta.findById = function(aBiciId){
-    let aBici = Bicicleta.allBicis.find(x => x.id == aBiciId)
-    if(aBici){
-        return aBici
-    }
-    else{
-        throw new Error(`No existe una bici con el id: ${aBiciId}`)
-    }
+    let aBici;
+    db.serialize(function name() {
+        db.get(`SELECT * FROM Bicicleta WHERE id = ${aBiciId}`, function(err, row) {
+            if(err)
+                throw new Error(`No existe una bici con el id: ${aBiciId}`);
+            aBici = row;
+        });
+    });
+    console.log(aBici);
+    return aBici;
 }
 
 Bicicleta.removeById = function(aBiciId){
-    for(let i = 0; i < Bicicleta.allBicis.length; i++){
-        if(Bicicleta.allBicis[i].id == aBiciId){
-            //Borrar
-            Bicicleta.allBicis.splice(i, 1)
-            break
-        }
-    }
+    db.serialize(function() {
+        db.run(`DELETE FROM Bicicleta WHERE id = ${aBiciId}`);
+    });
 }
 
 module.exports = Bicicleta

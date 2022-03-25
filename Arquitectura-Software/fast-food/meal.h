@@ -22,7 +22,7 @@ class Meal {
         return price;
     }
 
-    void setAsComboItem();
+    virtual void setAsComboItem() = 0;
 
     void print() {
         std::cout << name << " $" << price << "\n";

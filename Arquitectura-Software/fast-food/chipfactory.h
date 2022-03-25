@@ -3,16 +3,15 @@
 
 /* Al utilizar esta clase evitamos que el usuario ingrese mal el nombre o el precio del producto. Así siempre se crearan papas de un tamaño con un mismo precio */
 namespace ChipsFactory {
-    Chips createChips(enum MealSizes size){
+    Chips* createChips(enum MealSizes size){
+        Chips* c;
         if(size == BIG){
-            Chips c("Papas grandes", 19);
-            return c;
+            c = new Chips("Papas grandes", 19);
         } else if(size == MEDIUM) {
-            Chips c("Papas mediana", 17);
-            return c;
+            c = new Chips("Papas mediana", 17);
         } else if(size == SMALL) {
-            Chips c("Papas chicas", 15);
-            return c;
+            c = new Chips("Papas chicas", 15);
         }
+        return c;
     }
 }

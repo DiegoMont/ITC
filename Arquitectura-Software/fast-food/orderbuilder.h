@@ -13,69 +13,71 @@
 
 namespace OrderBuilder {
 
-    void makeCombo(std::vector<Meal> items) {
-        for(Meal item: items);
-            //item.setAsComboItem();
+    void makeCombo(std::vector<Meal*>* items) {
+        for(Meal* item: *items)
+            item->setAsComboItem();
     }
 
     Order* createIndividualOrder(enum MenuOptions option) {
+        std::vector<Meal*>* orderItems = new std::vector<Meal*>;
         if(option == PAPAS_GRANDES) {
-            std::vector<Meal> orderItems;
-            orderItems.push_back(ChipsFactory::createChips(BIG));
-            return new Order(orderItems);
+            orderItems->push_back(ChipsFactory::createChips(BIG));
         } else if(option == PAPAS_MEDIANAS) {
-            std::vector<Meal> orderItems;
-            orderItems.push_back(ChipsFactory::createChips(MEDIUM));
-            return new Order(orderItems);
+            orderItems->push_back(ChipsFactory::createChips(MEDIUM));
         } else if(option == PAPAS_CHICAS) {
-            std::vector<Meal> orderItems;
-            Chips mediumChips(ChipsFactory::createChips(SMALL));
-            orderItems.push_back(mediumChips);
-            return new Order(orderItems);
+            orderItems->push_back(ChipsFactory::createChips(SMALL));
         } else if(option == HAMBURGUESA) {
-            std::vector<Meal> orderItems;
-            Hamburguer hamburguer;
-            orderItems.push_back(hamburguer);
-            return new Order(orderItems);
+            Hamburguer* hamburguer = new Hamburguer();
+            orderItems->push_back(hamburguer);
         } else if(option == NUGGETS) {
-            std::vector<Meal> orderItems;
-            Nugget nuggets;
-            orderItems.push_back(nuggets);
-            return new Order(orderItems);
+            Nugget* nuggets = new Nugget();
+            orderItems->push_back(nuggets);
         } else if(option == REFRESCO_GRANDE) {
-            std::vector<Meal> orderItems;
-            orderItems.push_back(SodaFactory::createSoda(BIG));
-            return new Order(orderItems);
+            orderItems->push_back(SodaFactory::createSoda(BIG));
         } else if(option == REFRESCO_MEDIANO) {
-            std::vector<Meal> orderItems;
-            orderItems.push_back(SodaFactory::createSoda(MEDIUM));
-            return new Order(orderItems);
+            orderItems->push_back(SodaFactory::createSoda(MEDIUM));
         } else if(option == REFRESCO_CHICO) {
-            std::vector<Meal> orderItems;
-            orderItems.push_back(SodaFactory::createSoda(SMALL));
-            return new Order(orderItems);
+            orderItems->push_back(SodaFactory::createSoda(SMALL));
         }
-        return nullptr;
+        Order* newOrder = new Order(orderItems);
+        return newOrder;
     }
 
     Order* createComboOrder(enum MenuOptions option) {
+        std::vector<Meal*>* orderItems = new std::vector<Meal*>;
+        Meal* food;
+        Meal* side;
+        Meal* drink;
         if(option == COMBO1) {
-            std::vector<Meal> orderItems;
-            Hamburguer h;
-            Chips c = ChipsFactory::createChips(BIG);
-            Soda bigSoda = SodaFactory::createSoda(BIG);
-            orderItems.push_back(bigSoda);
-            orderItems.push_back(h);
-            orderItems.push_back(c);
-            makeCombo(orderItems);
-            return new Order(orderItems);
+            food = new Hamburguer();
+            side = ChipsFactory::createChips(BIG);
+            drink = SodaFactory::createSoda(BIG);
         } else if(option == COMBO2) {
-            std::vector<Meal> orderItems;
-            Hamburguer h;
-            orderItems.push_back(h);
-            makeCombo(orderItems);
-            return new Order(orderItems);
+            food = new Hamburguer();
+            side = ChipsFactory::createChips(SMALL);
+            drink = SodaFactory::createSoda(SMALL);
+        } else if(option == COMBO3) {
+            food = new Hamburguer();
+            side = ChipsFactory::createChips(MEDIUM);
+            drink = SodaFactory::createSoda(MEDIUM);
+        } else if(option == COMBO4) {
+            food = new Nugget();
+            side = ChipsFactory::createChips(BIG);
+            drink = SodaFactory::createSoda(BIG);
+        } else if(option == COMBO5) {
+            food = new Nugget();
+            side = ChipsFactory::createChips(SMALL);
+            drink = SodaFactory::createSoda(SMALL);
+        } else if(option == COMBO6) {
+            food = new Nugget();
+            side = ChipsFactory::createChips(MEDIUM);
+            drink = SodaFactory::createSoda(MEDIUM);
         }
-        return nullptr;
+        orderItems->push_back(drink);
+        orderItems->push_back(side);
+        orderItems->push_back(food);
+        makeCombo(orderItems);
+        Order* newOrder = new Order(orderItems);
+        return newOrder;
     }
 }

@@ -1,0 +1,425 @@
+---
+title: "Práctica R"
+author: 'Alumno: Diego Montaño Martínez'
+date: "9/3/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+# Introducción a R
+
+
+## ¿Qué es R?
+* R es un lenguaje de programación y un ambiente de cómputo estadístico
+* R es software libre.
+* Cuando instalamos R, instala la base de R. Pero la funcionalidad adicional está en **paquetes** programados por terceros.
+
+## ¿Por qué R?
+* R funciona en  las plataformas más usadas (Mac, Windows, Linux).
+* R es un lenguaje de programación completo.
+* R promueve la investigación reproducible: procesamiento, análisis y visualización de datos.
+* R está actualizado en CRAN hay cerca de 8000 paquetes.
+* R se puede combinar con herramientas bioinformáticas y formatos de datos procesados.
+* R tiene capacidades gráficas muy sofisticadas, por el paquete ggplot y sus extensiones.
+* R es popular como herramienta estadística y bioinformática.
+* Los principales paquetes son: de todo tipo de R (CRAN) y especializado en paquetes de bioinformática (Bioconductor).
+
+## Ejercicios
+
+### Ejercicio 1 
+```{r}
+10-2/8
+```
+Divide 2 entre 8, y luego resta el resultado a 10 con operadores. Cuando se encuentra con operaciones múltiples, R sigue el criterio de hacer división y multiplicación antes de suma y resta.  
+```{r}
+(10-2)/8
+```
+Usando paréntesis, puedes especificar el orden en el cual las operaciones se debe llevar a cabo. Aquellas operaciones dentro de paréntesis se llevaran a cabo antes de las que están fuera del paréntesis. En este caso, la resta antes que la división.
+
+a) Escribe la siguiente operación en una sola linea de código usando operadores: multiplica 5.6 por 11.7, después divide este valor entre 3, sumando 6.6 a este, y elevando todo el resultado a 2.
+
+```{r}
+((5.6 * 11.7 / 3) + 6.6 ) ^ 2
+```
+
+### Ejercicio 2
+
+```{r}
+rep(x = c("Homo", "sapiens"), times = 7)
+rep(x = c("Homo", "sapiens"), each = 7)
+```
+
+Estos comandos usan la función *rep* para repetir la información en el argumento x.
+
+a) ¿Cómo y por qué los resultados de las dos lineas son diferentes?
+
+Tu respuesta:
+Las dos llamadas a rep() se hacen con argumentos diferentes, produciendo resultados diferentes en cada caso. En la primera línea se llama con el argumento *times* que recibe un vector de ints, en este caso al tener un valor int, repite ese número de veces el vector *x* en el resultado. En la segunda línea se llama con el argumento *each*, que recibe un int, y repite cada elemento de *x* ese número de veces.
+
+b) Crea un vector que contenga “¡R es asombroso!” 10 veces. Si quieres, 
+usa la función *rep* para ayudarte a completar esta tarea.
+
+```{r}
+rep("¡R es asombroso!", 10)
+```
+
+c) Reescribe el código de arriba en 3 diferentes formas: 
+
+1. Usando los nombres de los argumentos en su orden predeterminado
+2. excluyendo los nombres de los argumentos
+3. Cambiando el orden de los argumentos
+
+
+```{r}
+rep(x="¡R es asombroso!", times=1, length.out=NA, each=10)
+rep("¡R es asombroso!", 1, NA, 10)
+rep(each=10, length.out=NA, x="¡R es asombroso!", times=1)
+```
+
+### Ejercicio 3
+
+```{r}
+rand_1 <- rnorm(100, mean = 5, sd = 1.5)
+```
+Crea un objeto con 100 valores aleatorios tomados de una distribución normal con un promedio de 5 y una desviación estándar de 1.5.
+
+a) ¿Qué tipo de objeto es este?
+
+Tu respuesta:
+Es un vector
+
+b) ¿Qué tipo de datos contiene?
+
+```{r}
+typeof(rand_1)
+```
+
+Tu respuesta:
+Double
+
+
+c) ¿Cuál es la longitud de este objeto?
+
+```{r}
+length(rand_1)
+```
+
+
+d) ¿Cuáles son la media y la desviación estándar de "rand_1"
+
+Tu respuesta:
+De acuerdo a los valores de los argumentos que pasamos a rnorm la media debería de aproximarse a 5 y la desviación estándar a 1.5
+
+e) Reescriba "rand_1" con otro conjunto de 100 valores aleatorios tomados de una distribución normal con un promedio de 5 y una desviación estándar de 1.5. luego calcúlale la media y la desviación estándar usando funciones de R.
+
+```{r}
+rand_1 = rnorm(100, mean=5, sd=1.5)
+mean(rand_1)
+sd(rand_1)
+```
+
+
+### Ejercicio 4
+
+```{r}
+exp_mat <- matrix(rpois(1000, 1)*rpois(1000, 10),  nrow = 50)
+```
+
+a) ¿Qué hace la función de *rpois*?
+
+Tu respuesta:
+Regresa un vector de números que siguen la distribución de Poisson con el valor de lambda indicada como argumento
+
+
+Supongamos que la matriz *exp_mat* es una matriz de los nivels de expresión de genes (filas) en varias muestras (columnas). En matrices como ésta, es útil tener nombres para las filas y las columnas. La siguiente línea de código crea nombres para las columnas que representan diferentes muestras.
+
+b) Hay un error en la línea de abajo, lea el mensaje de error, encuentre el error y solucionelo.
+
+```{r}
+colnames(exp_mat) <- paste("smpl", 1:ncol(exp_mat), sep="_")
+```
+
+Explica cual era el error:
+ncol() esperaba una matriz y le estábamos mandando un string
+
+### Ejercicio 5
+
+a) ¿Qué es el directorio de trabajo:
+
+Tu respuesta:
+El directorio de trabajo es el cirectorio de trabajo asociado a un proceso. Generalmente es el mismo en donde está almacenado el archivo ejecutable del proceso.
+
+b) Usando tres lineas de código consulta, cambia el directorio de trabajo a donde esté el archivo "Example_expression_set.txt" proporcionado y luego consulta los archivos que contiene tu directorio de trabajo.
+
+```{r}
+getwd()
+setwd("~/GitHub/ITC/Bioinformatica/Practica_1")
+list.files()
+```
+
+### Ejercicio 6
+
+a) Usando la función *read.table* genera un objeto que se llame *exp_mat* y que contenga los datos almacenados en el archivo "Example_expression_set.txt". Con los parámetros de *read.table*, cuida que los nombres de los renglones y de las columnas queden como etiquetas,
+
+
+```{r}
+exp_mat = read.table("Example_expression_set.txt", header=TRUE, sep="\t")
+```
+
+b) Usando corchetes cuadrados y la función *plot*, grafica los datos contenidos en la primer columna contra los datos de la segunda del objeto *exp_mat*
+
+```{r}
+plot(exp_mat[,2], exp_mat[,3])
+```
+
+
+c) Usando *write.table* reescribe la matriz *exp_mat* en un archivo pero esta vez en formato separado por comas (.csv) y nómbralo "exp_mat.csv".
+
+```{r}
+write.table(exp_mat, "exp_mat.csv", sep=",", row.names=FALSE)
+```
+
+
+d) Guarda un archivo de R (.RData) que contenga el objeto *exp_mat* en un archivo llamado "objetoR.RData".
+
+```{r}
+save(exp_mat, file="objetoR.RData")
+```
+
+
+e) Guarda el objeto *exp_mat* en formaro RDS en un archivo llamado "exp_mat.RDS".
+
+```{r}
+saveRDS(exp_mat, "exp_mat.RDS")
+```
+
+
+## Ejercicio 7
+
+```{r}
+data(mtcars)
+```
+
+*mtcars* es un objeto con datos de juguete predefinidocon pruebas de carretera de motores de distintas marcas de coches en R. Pueses obtener más datos de este usando *?mtcars*.
+
+a) Usa *head* para explorar los 10 primeros renglones del objeto *mtcars*.
+
+```{r}
+head(mtcars)
+```
+
+
+b) Usando *$* para indexar *mtcars*, haz una gráfica del peso contra las millas/galón.
+
+```{r}
+plot(mtcars$mpg, mtcars$wt)
+```
+
+c)  Usa la función *lm* para ver si hay alguna correlación entre estos dos factores y guarda el resultado en un objeto *res_lm*. Luego usa *summary* para ver los resultados del ajuste del modelo. ¿Cómo interpretarías estos resultados?
+
+Tip: Para ver como se añade una fórmula, revisa los ejemplos de la ayuda de *lm*
+
+```{r}
+res_lm = lm(wt ~ mpg, mtcars)
+summary(res_lm)
+```
+
+
+Tu interpretación:
+Los valores están muy dispersos por lo que creo que el modelo no tiene un buen ajuste.
+
+## Ejercicio 8
+
+```{r}
+data("iris")
+```
+
+Este comando cargue el set de datos de "Iris" de Edgar Anderson.
+
+Los siguientes argumentos se describen en la página de ayuda de la función "plot.default": "xlim" y "ylim." Utilize ambos argumentos en este código para modificar la gráfica resultante, la misma que muestra la relación entre dos variables morfológicas para especies de Iris:
+
+```{r}
+plot(iris$Petal.Width, iris$Sepal.Width, xlim=c(0, 2.5), ylim=c(0, 4))
+```
+
+Ve a la página de ayuda para la función "plot.default" y lee sobre estos 6 argumentos:
+
+* "type"
+* "main"
+* "sub"
+* "xlab"
+* "ylab"
+* "asp"
+
+a) Utiliza esa información para modificar el código anterior utilizando todos los cinco argumentos.
+
+```{r}
+plot(iris$Petal.Width, iris$Sepal.Width, type="h", main="Sepal Width vs Petal Width", sub="Histogram", xlab="Petal width", ylab="Sepal width", asp=16/9)
+```
+
+Considere este cambio en el código del inciso anterior:
+
+```{r}
+plot(iris$Petal.Width, iris$Sepal.Width, 
+     xlab="Petal Width (cm)", 
+     ylab="Sepal Width (cm)", 
+     cex.axis=1.5, 
+     cex.lab=1.5, 
+     bty="n", 
+     pch=19)
+```
+
+Nota el uso del argumento "bty". 
+
+b) Ve a la página de ayuda para la función *par* y lea sobre este argumento. Cambia el valor dado al argumento *bty* 3 veces en el código anterior para ver los resultados que son posible para diferentes valores de *bty*.
+
+
+```{r}
+plot(iris$Petal.Width, iris$Sepal.Width, 
+     xlab="Petal Width (cm)", 
+     ylab="Sepal Width (cm)", 
+     cex.axis=1.5, 
+     cex.lab=1.5, 
+     bty="7",
+     pch=19)
+```
+
+```{r}
+plot(iris$Petal.Width, iris$Sepal.Width, 
+     xlab="Petal Width (cm)", 
+     ylab="Sepal Width (cm)", 
+     cex.axis=1.5, 
+     cex.lab=1.5, 
+     bty="U", # haz tus cambios aquí
+     pch=19)
+```
+
+```{r}
+plot(iris$Petal.Width, iris$Sepal.Width, 
+     xlab="Petal Width (cm)", 
+     ylab="Sepal Width (cm)", 
+     cex.axis=1.5, 
+     cex.lab=1.5, 
+     bty="C",
+     pch=19)
+```
+
+## Ejercicio 9
+
+Un bucle permite repetir un pedazo de código múltiples veces sin tener que repetirlo. *for* es la manera mas comÃºn de construir bucles. Este tipo de bucle repite un pedazo de código un numero pre-determinado de veces.
+
+La estructura general de un bucle *for* es la siguiente:
+
+#### for(i in v) { code }
+
+Esto quiere decir aproximadamente:
+
+para cada valor que el índice "i" toma del vector "v", repetir: { este código }
+
+### Ejemplo fácil:
+
+```{r}
+v <- 1:10 # Se define el vector
+for(i in v) # Se define la variable que va a "correr" sobre el vector "v"
+  {
+    print(i) # código que va a ejecutar cada uno de los elementos de "v"
+}
+```
+
+Esto se traduce como:
+
+Crear una secuencia del 1 al 10 y guardarla como un objeto llamado *v* Para cada valor que la variable *i* toma del vector *v* hacer lo siguiente: imprimir el valor de i
+
+a) Escriba un bucle "for" que imprima en pantalla los valores de 5 a 123
+
+```{r}
+# Tu respuesta aquí
+```
+
+b) Escriba un bucle "for" que eleva al cuadrado cada elemento del siguiente vector e imprime los resultados en la pantalla.
+
+```{r}
+x <- c (3,4,6,2,4,9)
+# Tu "for" aquí
+```
+
+## Ejercicio 10
+
+La función *apply* es usada para aplicar una función a cada elemento de una estructura de datos. En particular, es usada para aplicar funciones en matrices, data frames, arrays o listas.
+Con esta podemos automatizar tareas complejas usando poca líneas de código y es una de las características distintivas de R como lenguaje de programación.
+
+La funcion *apply* ejecuta la funcion "FUN", sobre todos las columnas (MARGIN = 2) o renglones (MARGIN = 1) de una matriz.
+
+Uso: apply(X, MARGIN, FUN, ...)
+
+Argumentos:
+
+* X: una matriz o cualquier otro objeto que sea posible convertir en una matriz
+* MARGIN: Define sobre qué se va ejecutar la función y toma valores entre 1 y 2:
+* MARGIN=1: La manipulación se hace por renglón.
+* MARGIN=2: La manipulación se hace por columnas.
+* MARGIN=c(1,2): La manipulación se hace por renglones y columnas.
+* FUN: Indica que función se aplicará. 
+
+Se puede usar funciones integradas como *mean*, *median*, *sum*, *min*, *max* e incluso funciones definidas por el usuario.
+
+### Ejemplo sencillo
+
+Creamos una matriz ejemplo de cuatro renglones
+
+```{r}
+matriz <- matrix(1:16, nrow = 4)
+```
+
+Aplicamos *apply*, dando la función *sum* como el argumento "FUN". Nota que solo necesitamos el nombre de la función sin usar paréntesis. Por último, damos el argumento MARGIN = 1, para aplicar la función a los renglones.
+
+```{r}
+apply(X = matriz, MARGIN = 1, FUN = sum)
+```
+
+Esto es equivalente a hacer lo siguiente:
+
+```{r}
+sum(matriz[1, ])
+sum(matriz[2, ])
+sum(matriz[3, ])
+sum(matriz[4, ])
+```
+
+Si cambiamos el argumento "MARGIN" de "MARGIN = 1" a "MARGIN = 2", entonces la función se aplicará a todas las columnas.
+
+```{r}
+apply(X = matriz, MARGIN = 2, FUN = sum)
+```
+
+O sea, el equivalente a hacer lo siguiente:
+
+```{r}
+sum(matriz[, 1])
+sum(matriz[, 2])
+sum(matriz[, 3])
+sum(matriz[, 4])
+```
+
+a) Usando *apply* calcula primero la media y luego, con un segundo comando, la desviación estándar de todas las variables (columnas) del conjunto de datos *mtcars*.
+
+```{r}
+# Tu respuesta 1 aquí
+# Tu respuesta 2 aquí
+```
+
+b) Busca *lapply* en la ayuda y resuelve con ella la misma pregunta que el inciso anterior. 
+
+```{r}
+# Tu respuesta 1 aquí
+# Tu respuesta 2 aquí
+```
+
+
+c) ¿En qué difieren *apply* y *lapply*?
+
+Tu respuesta:
+
+

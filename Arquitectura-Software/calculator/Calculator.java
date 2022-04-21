@@ -19,4 +19,26 @@ public class Calculator {
         return a - b;
     }
 
+    public double power(double base, double exponent) {
+        int integerExponent = (int) exponent;
+        boolean isIntegerExponent = integerExponent == exponent;
+        if(isIntegerExponent) {
+            if(integerExponent < 0)
+                return exponentiationBySquaring(1/base, -integerExponent);
+            else
+                return exponentiationBySquaring(base, integerExponent);
+        } else
+            return Math.pow(base, exponent);
+    }
+
+    private double exponentiationBySquaring(double base, int exponent) {
+        if(exponent == 0)
+            return 1;
+        boolean isEvenExponent = (exponent & 1) == 0;
+        if(isEvenExponent)
+            return exponentiationBySquaring(base * base, exponent/2);
+        else
+            return base * exponentiationBySquaring(base * base, (exponent-1)/2);
+    }
+
 }

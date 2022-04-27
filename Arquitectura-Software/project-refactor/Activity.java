@@ -2,12 +2,12 @@ public class Activity {
     public static final int MAX_GRADE = 100;
     public static final int MIN_GRADE = 0;
     
-    public String name;
     private int grade;
 
-    public Activity(String name, int grade) {
-        this.name = name;
-        setGrade(grade);
+    public Activity(int grade) {
+        try {
+            setGrade(grade);
+        } catch(Exception e) {}
     }
 
     public int getGrade() {

@@ -1,0 +1,17 @@
+button {
+  color: #fff;
+  background-color: rgb(0, 130, 228);
+  width: 40%;
+  padding: 0.5rem;
+}
+
+.container {
+  background-color: #000;
+}
+
+.tarjeta {
+  background-color: var(--blanco-texto);
+  box-sizing: border-box;
+  width: 80%;
+  padding: 1rem 1.5rem;
+}

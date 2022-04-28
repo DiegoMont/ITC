@@ -1,0 +1,69 @@
+h2 {
+  font-size: 1.2rem;
+  text-align: left;
+  padding: 0 10px;
+}
+
+h2 span {
+  font-weight: 400;
+}
+
+h3 {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+section {
+  height: calc(100vh - 75px);
+  padding: 0;
+}
+
+.table-head {
+  background-color: var(--gris-claro);
+}
+
+.table-content {
+  overflow-y: auto;
+}
+
+/*********************
+ *                   *
+ *     HISTORIAL     *
+ *                   *
+ *********************/
+
+ #historial .grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+ }
+
+ #historial .grid p {
+   text-align: center;
+ }
+
+ #historial .table-content {
+  height: calc(100% - 19px);
+ }
+
+ /*********************
+ *                   *
+ *     HISTORIAL     *
+ *                   *
+ *********************/
+
+ #tienda button, #saldo button {
+   width: 70%;
+ }
+
+ #tienda .grid {
+  display: grid;
+  grid-template-columns: 20px repeat(2, 1fr);
+ }
+
+ #tienda .grid p {
+  text-align: center;
+}
+
+#tienda .table-content {
+  height: calc(100vh - 125px);
+ }

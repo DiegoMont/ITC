@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="css/reset.css">
+    <link rel="stylesheet" type="text/css" href="css/general.css">
+    <link rel="stylesheet" type="text/css" href="css/estilos_historial.css">
+</head>
+<body>
+  <div class="container">
+    <nav class="flexbox">
+      <button id="btn-registro">Registro</button>
+      <button id="btn-tienda">Tienda</button>
+      <button id="btn-saldo">Saldo</button>
+      <button id="btn-historial">Historial</button>
+    </nav>
+    <h2 id="nombre">José Rómulo Sosa Ortíz</h2>
+    <h2 id="saldo-actual"></h2>
+
+    <section id="historial" class="ocultar">
+      <div class="grid table-head">
+        <h3>Operación</h3>
+        <h3>Cantidad</h3>
+        <h3>Fecha</h3>
+      </div>
+
+      <div class="grid table-content">
+        <!-- <p>Retiro</p>
+        <p>$50</p>
+        <p>23/05/2021</p> -->
+      </div>
+    </section>
+
+    <section id="tienda" class="ocultar">
+      <form action="" method="post" id="form-tienda">
+        <div class="grid table-head">
+          <h3> </h3>
+          <h3>Producto</h3>
+          <h3>Precio</h3>
+        </div>
+        <div class="grid table-content">
+          <!-- <input type="checkbox" name="" id="">
+          <label for="">Four Loko</label>
+          <p>$20</p> -->
+        </div>
+        <button type="submit" class="active-nav-btn">Pagar</button>
+      </form>
+    </section>
+
+    <section id="saldo" class="ocultar">
+      <form action="" method="post" id="actualizar-saldo">
+        <label for="input-saldo">Saldo a añadir:</label>
+        <input type="number" name="input-saldo" id="input-saldo" inputmode="numeric">
+        <p id="error-saldo" class="error"></p>
+        <button type="submit" class="active-nav-btn">Actualizar saldo</button>
+      </form>
+    </section>
+    
+    <!-- SCRIPTS -->
+    <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-firestore.js"></script>
+    <script src="js/script-firebase.js"></script>
+    <script src="js/HistorialMain.js"></script>
+    <!-- SCRIPTS -->
+  </div>
+</body>
+</html>

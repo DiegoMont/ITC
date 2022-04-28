@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="css/reset.css">
+    <link rel="stylesheet" type="text/css" href="css/general.css">
+</head>
+<body>
+  <nav class="flexbox">
+    <button id="btn-registro" class="active-nav-btn">Registro</button>
+    <!--<button id="btn-tienda">Tienda</button>
+    <button id="btn-saldo">Saldo</button>
+    <button id="btn-historial">Historial</button>-->
+  </nav>
+
+  <section id="registro">
+    <div class="centre">
+      <form action="" method="post" id="form-registro-cliente">
+        <label for="nombre-cliente-nuevo">Nombre del cliente:</label>
+        <input type="text" name="nombre-cliente-nuevo" id="nombre-cliente-nuevo">
+<br/>
+          <label for="saldo-inicial">Saldo inicial:</label>
+          <input type="number" name="saldo-inicial" id="saldo-inicial" inputmode="numeric">
+
+        <button style="width: 70%;" type="submit" class="active-nav-btn">Registrar</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- SCRIPTS -->
+  <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-firestore.js"></script>
+  <script src="js/script-firebase.js"></script>
+  <script src="js/Main.js"></script>
+  <!-- SCRIPTS -->
+</body>
+</html>

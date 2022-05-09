@@ -39,9 +39,11 @@ public class CuentaRepository {
     }
 
     public void actualizarMontoDeCuenta(int index, double monto){
-        Cuenta cuenta = cuentaRepository.obtenerCuentaPorIndice(index);
+        Cuenta cuenta = instance.obtenerCuentaPorIndice(index);
         cuenta.setMonto(monto);
     }
 
-
+    public int countCuentas() {
+        return cuentas.size();
+    }
 }

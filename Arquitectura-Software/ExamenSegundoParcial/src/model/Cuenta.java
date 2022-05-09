@@ -4,6 +4,7 @@ public class Cuenta {
     private double monto;
     private String nombre;
     private String numeroDeCuenta;
+    private Banco banco;
 
     public double getMonto() {
         return monto;
@@ -27,5 +28,19 @@ public class Cuenta {
 
     public void setNumeroDeCuenta(String numeroDeCuenta) {
         this.numeroDeCuenta = numeroDeCuenta;
+    }
+
+    public Banco getBanco() {
+        return banco;
+    }
+
+    public void setBanco(Banco banco) {
+        this.banco = banco;
+    }
+
+    public enum Banco {
+        BANCO_A,
+        BANCO_B,
+        BANCO_C
     }
 }

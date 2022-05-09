@@ -7,21 +7,28 @@ import java.util.List;
 
 public class CuentaRepository {
 
+    private static CuentaRepository instance;
     private List<Cuenta> cuentas;
 
-    CuentaRepository(){
+    private CuentaRepository(){
         cuentas = new ArrayList<>();
     }
 
-    Cuenta obtenerCuentaPorIndice(int index){
+    public static CuentaRepository getInstance() {
+        if(instance == null)
+            instance = new CuentaRepository();
+        return instance;
+    }
+
+    public Cuenta obtenerCuentaPorIndice(int index){
         return cuentas.get(index);
     }
 
-    void agregarCuenta(Cuenta c){
+    public void agregarCuenta(Cuenta c){
         cuentas.add(c);
     }
 
-    Cuenta obtenerCuentaPorNumeroCuenta(String numeroDeCuenta){
+    public Cuenta obtenerCuentaPorNumeroCuenta(String numeroDeCuenta){
         for (Cuenta c:
              cuentas) {
             if(c.getNumeroDeCuenta().equalsIgnoreCase(numeroDeCuenta)){
@@ -31,8 +38,9 @@ public class CuentaRepository {
         return null;
     }
 
-    void actualizarMontoDeCuenta(int index,double monto){
-        //ToDO
+    public void actualizarMontoDeCuenta(int index, double monto){
+        Cuenta cuenta = cuentaRepository.obtenerCuentaPorIndice(index);
+        cuenta.setMonto(monto);
     }
 
 

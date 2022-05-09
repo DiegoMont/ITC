@@ -4,16 +4,19 @@ import java.util.Scanner;
 
 import model.Banco;
 import model.Cuenta;
+import service.CajeroService;
 import service.CuentaService;
 
 public class CliMenu {
 
     private Scanner sc;
-    private CuentaService service;
+    private CuentaService cuentaService;
+    private CajeroService cajeroService;
 
     public CliMenu() {
         sc = new Scanner(System.in);
-        service = new CuentaService();
+        cuentaService = new CuentaService();
+        cajeroService = new CajeroService();
     }
 
     public void startApp() {
@@ -49,23 +52,23 @@ public class CliMenu {
         Banco banco = seleccionarBanco();
         System.out.print("Cual es el saldo inicial: ");
         double saldoInicial = Double.parseDouble(sc.nextLine());
-        Cuenta nuevaCuenta = service.abrirCuenta(nombre, banco, saldoInicial);
+        Cuenta nuevaCuenta = cuentaService.abrirCuenta(nombre, banco, saldoInicial);
         System.out.println("La cuenta " + nuevaCuenta.getNumeroDeCuenta() + " ha sido creada con exito!");
+        printSaldo(nuevaCuenta);
     }
 
     private void buscarCuentaPorIndice() {
-        int totalCuentas = service.countCuentas();
+        int totalCuentas = cuentaService.countCuentas();
         System.out.print("Ingrese el indice de la cuenta[1-" + totalCuentas + "]: ");
         int indiceCuenta = Integer.parseInt(sc.nextLine()) - 1;
-        Cuenta cuenta = service.getCuenta(indiceCuenta);
-        abrirMenuCuenta(cuenta);
+        abrirMenuCuenta(indiceCuenta);
     }
 
     private void buscarPorNumeroDeCuenta() {
         System.out.print("Ingrese el numero de cuenta: ");
         String numeroCuenta = sc.nextLine();
-        Cuenta cuenta = service.getCuenta(numeroCuenta);
-        abrirMenuCuenta(cuenta);
+        int indiceCuenta = cuentaService.getIndiceCuenta(numeroCuenta);
+        abrirMenuCuenta(indiceCuenta);
     }
 
     private Banco seleccionarBanco() {
@@ -84,12 +87,20 @@ public class CliMenu {
         return Banco.BANCO_C;
     }
 
-    private void abrirMenuCuenta(Cuenta c) {
+    private void abrirMenuCuenta(int indiceCuenta) {
         int input = 0;
-        while(input < 1 || input > 3) {
-            printSaldo(c);
+        while(input != 3) {
+            printSaldo(cuentaService.getCuenta(indiceCuenta));
             printMenuCuenta();
             input = Integer.parseInt(sc.nextLine());
+            try {
+                if(input == 1)
+                    hacerDeposito(indiceCuenta);
+                else if(input == 2)
+                    hacerRetiro(indiceCuenta);
+            } catch(Exception e) {
+                System.out.println("Revisa la informacion de la cuenta");
+            }
         }
     }
 
@@ -103,5 +114,18 @@ public class CliMenu {
         System.out.println("2. Hacer un retiro");
         System.out.println("3. Regresar");
         System.out.print("Ingrese una opcion: ");
+    }
+
+    private void hacerDeposito(int indice) {
+        System.out.print("Ingresa el monto que deseas depositar: ");
+        double monto = Double.parseDouble(sc.nextLine());
+        cajeroService.depositar(indice, monto);
+    }
+
+    private void hacerRetiro(int indice) throws Exception {
+        Banco bancoCajero = seleccionarBanco();
+        System.out.print("Ingresa el monto que deseas retirar: ");
+        double monto = Double.parseDouble(sc.nextLine());
+        cajeroService.retirar(bancoCajero, indice, monto);
     }
 }

@@ -37,10 +37,4 @@ public class Cuenta {
     public void setBanco(Banco banco) {
         this.banco = banco;
     }
-
-    public enum Banco {
-        BANCO_A,
-        BANCO_B,
-        BANCO_C
-    }
 }

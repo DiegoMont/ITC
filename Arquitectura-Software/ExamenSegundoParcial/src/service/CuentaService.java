@@ -54,8 +54,8 @@ public class CuentaService {
         return cuentaRepository.obtenerCuentaPorIndice(indice);
     }
 
-    public Cuenta getCuenta(String numeroDeCuenta) {
-        return cuentaRepository.obtenerCuentaPorNumeroCuenta(numeroDeCuenta);
+    public int getIndiceCuenta(String numeroDeCuenta) {
+        return cuentaRepository.obtenerIndicePorNumeroCuenta(numeroDeCuenta);
     }
 
     private String getNumeroDeCuenta(String nombre, Banco banco) {

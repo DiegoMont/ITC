@@ -28,14 +28,15 @@ public class CuentaRepository {
         cuentas.add(c);
     }
 
-    public Cuenta obtenerCuentaPorNumeroCuenta(String numeroDeCuenta){
-        for (Cuenta c:
-             cuentas) {
+    public int obtenerIndicePorNumeroCuenta(String numeroDeCuenta) {
+        int i = 0;
+        for (Cuenta c: cuentas) {
             if(c.getNumeroDeCuenta().equalsIgnoreCase(numeroDeCuenta)){
-                return c;
+                return i;
             }
+            i++;
         }
-        return null;
+        return -1;
     }
 
     public void actualizarMontoDeCuenta(int index, double monto){

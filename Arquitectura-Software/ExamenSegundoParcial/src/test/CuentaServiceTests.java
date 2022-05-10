@@ -51,4 +51,19 @@ public class CuentaServiceTests {
             assertEquals(cuenta.getMonto(), nuevoSaldo);
         } catch (Exception e) {}
     }
+
+    @Test
+    public void hacerRetiro() {
+        try {
+            String nombre = "Diego";
+            Banco banco = Banco.BANCO_A;
+            double saldoInicial = 200;
+            Cuenta cuenta = cuentaService.abrirCuenta(nombre, banco, saldoInicial);
+            double montoRetiro = 100;
+            double comision = 30;
+            cuentaService.retirar(1, montoRetiro, comision);
+            double nuevoSaldo = saldoInicial - montoRetiro - comision;
+            assertEquals(cuenta.getMonto(), nuevoSaldo);
+        } catch (Exception e) {}
+    }
 }

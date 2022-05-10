@@ -41,7 +41,7 @@ public class CliMenu {
     private void printMainMenu() {
         System.out.println("1. Crear cuenta");
         System.out.println("2. Buscar cuenta (indice)");
-        System.out.println("3. Cuscar cuenta (numero de cuenta)");
+        System.out.println("3. Buscar cuenta (numero de cuenta)");
         System.out.println("4. Salir");
         System.out.print("Ingrese una opcion: ");
     }

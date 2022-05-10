@@ -6,26 +6,24 @@ import repository.CuentaRepository;
 
 public class CuentaService {
 
-    //Utilizar Singleton de Cuenta Repository para hacer uso de sus métodos e implementar todos los métodos faltantes
-
     CuentaRepository cuentaRepository;
 
     public CuentaService() {
         cuentaRepository = CuentaRepository.getInstance();
     }
 
-    public void depositar(int index, double monto) {
+    void depositar(int index, double monto) {
         Cuenta cuenta = cuentaRepository.obtenerCuentaPorIndice(index);
         double currentBalance = cuenta.getMonto();
         double balanceAfterDeposit = currentBalance + monto;
         cuentaRepository.actualizarMontoDeCuenta(index, balanceAfterDeposit);
     }
 
-    public void retirar(int index, double monto, double comision) throws Exception {
+    void retirar(int index, double monto, double comision) throws Exception {
         retirar(index, monto + comision);
     }
 
-    public void retirar(int index, double monto) throws Exception {
+    void retirar(int index, double monto) throws Exception {
         Cuenta cuenta = cuentaRepository.obtenerCuentaPorIndice(index);
         double currentBalance = cuenta.getMonto();
         double balanceAfterWithdraw = currentBalance - monto;

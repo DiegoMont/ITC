@@ -4,13 +4,14 @@ import org.junit.jupiter.api.Test;
 
 import model.Banco;
 import model.Cuenta;
-import service.CuentaService;
+import service.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class CuentaServiceTests {
+public class UnitTests {
 
     private CuentaService cuentaService;
+    private CajeroService cajeroService;
 
     @Test
     public void buscarPorIndice() {
@@ -46,7 +47,7 @@ public class CuentaServiceTests {
             double saldoInicial = 200;
             Cuenta cuenta = cuentaService.abrirCuenta(nombre, banco, saldoInicial);
             double montoADepositar = 100;
-            cuentaService.depositar(1, montoADepositar);
+            cajeroService.depositar(1, montoADepositar);
             double nuevoSaldo = saldoInicial + montoADepositar;
             assertEquals(cuenta.getMonto(), nuevoSaldo);
         } catch (Exception e) {}
@@ -60,10 +61,11 @@ public class CuentaServiceTests {
             double saldoInicial = 200;
             Cuenta cuenta = cuentaService.abrirCuenta(nombre, banco, saldoInicial);
             double montoRetiro = 100;
-            double comision = 30;
-            cuentaService.retirar(1, montoRetiro, comision);
+            double comision = 15;
+            cajeroService.retirar(Banco.BANCO_B, 1, montoRetiro);
             double nuevoSaldo = saldoInicial - montoRetiro - comision;
             assertEquals(cuenta.getMonto(), nuevoSaldo);
         } catch (Exception e) {}
     }
+
 }

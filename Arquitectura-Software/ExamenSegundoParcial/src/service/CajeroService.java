@@ -2,6 +2,12 @@ package service;
 
 import model.Banco;
 
+/**
+ * Debido a que los retiros o depósitos se hacen a través de un cajero (ATM) y este cajero puede ser del mismo banco al que pertenece la cuenta o diferente.
+ * Se implementó esta clase que funciona como adaptador para calcular la comisión necesaria que se debe cobrar por realizar el movimiento bancario.
+ * Con los modificadores de acceso que tiene CuentaService aseguramos que la única forma de realizar y registrar una de estas dos operaciones sea a traves de esta clase.
+ * 
+ */
 public class CajeroService {
 
     CuentaService cuentaService;

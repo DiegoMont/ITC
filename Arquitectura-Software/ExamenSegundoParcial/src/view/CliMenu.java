@@ -49,6 +49,18 @@ public class CliMenu {
     private void crearCuenta() throws Exception {
         System.out.print("Cual es su nombre: ");
         String nombre = sc.nextLine();
+        /* System.out.println("1. Banco A");
+        System.out.println("2. Banco B");
+        System.out.println("3. Banco C");
+        System.out.print("Seleccione un banco: ");
+        int inputBanco = Integer.parseInt(sc.nextLine());
+        if(inputBanco == 1)
+            banco = Banco.BANCO_A;
+        else if(inputBanco == 2)
+            banco =  Banco.BANCO_B;
+        else
+            banco = Banco.BANCO_C;
+        */
         Banco banco = seleccionarBanco();
         System.out.print("Cual es el saldo inicial: ");
         double saldoInicial = Double.parseDouble(sc.nextLine());
@@ -71,6 +83,9 @@ public class CliMenu {
         abrirMenuCuenta(indiceCuenta);
     }
 
+    /**
+     * En varias ocasiones es necesario elegir uno de los tres bancos disponibles. Por lo que se un hizo un refactor en el que que se reemplaza el código repetido por esta función
+     */
     private Banco seleccionarBanco() {
         int input = 0;
         while(input < 1 || input > 3) {
@@ -124,6 +139,21 @@ public class CliMenu {
 
     private void hacerRetiro(int indice) throws Exception {
         Banco bancoCajero = seleccionarBanco();
+        /* int input = 0;
+        System.out.print("A que banco pertenece el cajero: ");
+        while(input < 1 || input > 3) {
+            System.out.println("1. Banco A");
+            System.out.println("2. Banco B");
+            System.out.println("3. Banco C");
+            System.out.print("Seleccione un banco: ");
+            input = Integer.parseInt(sc.nextLine());
+        }
+        if(input == 1)
+            bancoCajero = Banco.BANCO_A;
+        else if(input == 2)
+            bancoCajero = Banco.BANCO_B;
+        else
+            bancoCajero = Banco.BANCO_C; */
         System.out.print("Ingresa el monto que deseas retirar: ");
         double monto = Double.parseDouble(sc.nextLine());
         cajeroService.retirar(bancoCajero, indice, monto);

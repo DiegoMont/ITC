@@ -1,9 +1,9 @@
-const axios = require('axios')
+const axios = require('axios');
 const assert = require('assert');
 
 const BASE_URL = 'http://localhost:4321/calculate';
 
-describe('Node Calculator', () => {
+describe('Node Web Calculator', () => {
     describe('Addition', addTest);
     describe('Subsctraction', substractTest);
     describe('Divison', divideTest);

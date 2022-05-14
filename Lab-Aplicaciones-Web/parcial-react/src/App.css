@@ -1,0 +1,181 @@
+body,
+        p {
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Header */
+        header {
+            box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 100px;
+        }
+
+        header .airbnb-logo {
+            max-width: 100px;
+            padding: 20px 0 14px 20px;
+        }
+
+        nav h1 {
+            font-family: sans-serif;
+            font-size: 16px;
+            display: inline;
+            vertical-align: middle;
+            display: none;
+        }
+
+        nav img {
+            max-width: 40px;
+            vertical-align: middle;
+        }
+
+        .user {
+            border: 1px solid #ccc;
+            border-radius: 50px;
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 20px;
+        }
+
+        .user .menu {
+            max-width: 30px;
+            padding: 0;
+            margin: 0;
+            vertical-align: middle;
+        }
+
+        .user .user-pic {
+            border-radius: 50%;
+            vertical-align: baseline;
+            vertical-align: middle;
+            padding: 5px;
+        }
+
+        @media screen and (min-width: 420px) {
+            nav h1 {
+                display: inline;
+            }
+        }
+
+
+        /* Cards Section */
+        section {
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        section h1 {
+            font-family: sans-serif;
+        }
+
+        .cards-container {
+            text-align: center;
+        }
+
+        /* Cards */
+        .card {
+            width: 240px;
+            overflow: hidden;
+            position: relative;
+            font-family: 'Arial', sans-serif;
+            display: inline-block;
+            margin: 20px 20px;
+            text-align: left;
+        }
+
+        .card .card-image {
+            border-radius: 14px;
+        }
+
+        .card .like {
+            position: absolute;
+            top: 8px;
+            right: 10px;
+            width: 50px;
+            opacity: 0.5;
+        }
+
+        .card .star {
+            width: 30px;
+            vertical-align: middle;
+        }
+
+        .card .rating {
+            font-weight: 100;
+        }
+
+        .card .reviews {
+            font-weight: 100;
+            color: #bbb;
+            padding: 0 3px;
+        }
+
+        .card .country {
+            font-weight: 100;
+            color: #bbb;
+        }
+
+        .card .price {
+            font-weight: bold;
+            color: black;
+            margin: 10px 0;
+        }
+
+        .card .price {
+            font-weight: bold;
+            color: black;
+            margin: 10px 0;
+        }
+
+        .card .price span {
+            font-weight: 100;
+        }
+
+
+        /* Footer */
+        footer {
+            background-color: #f7f7f7;
+        }
+
+        footer .footer-menu {
+            display: flex;
+            justify-content: center;
+        }
+
+        footer ul {
+            font-family: sans-serif;
+            font-size: 13px;
+            padding: 20px;
+            margin: 0 30px;
+        }
+
+        footer ul li:nth-child(1) {
+            font-weight: bold;
+        }
+
+        footer ul li {
+            list-style-type: none;
+            margin: 16px 0;
+        }
+
+        .footer-bottom {
+            padding-top: 24px;
+            padding-bottom: 24px;
+            border-top: 1px solid #DDDDDD;
+            font-family: sans-serif;
+            font-size: 14px;
+            display: flex;
+            justify-content: space-around;
+        }
+        
+        .footer-bottom p{
+            display: inline-block;
+        }
+        
+        .footer-bottom .world{
+            width: 30px;
+            display: inline;
+            vertical-align: middle;
+        }

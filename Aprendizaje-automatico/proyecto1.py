@@ -5,8 +5,12 @@ from sklearn.naive_bayes import MultinomialNB
 from sklearn.tree import DecisionTreeClassifier, export_text
 
 
-def read_and_divide_data(division_value):
-    global data, classes, numeric_data, train_data, test_data, train_classes, test_classes
+DATASET_SPLIT_SEED = 40692
+TREE_CLASSIFIER = DecisionTreeClassifier()
+NAIVE_BAYES_CLASSIFIER = MultinomialNB()
+
+
+def load_dataset():
     data = pd.read_csv("car.data")
     text_to_data_convertion = {
         "vhigh": 4, "high": 3, "med": 2, "low": 1,
@@ -17,45 +21,41 @@ def read_and_divide_data(division_value):
     }
     classes = data.iloc[:, -1]
     numeric_data = data.iloc[:,:-1].replace(text_to_data_convertion)
-    # print(numeric_data.head)
-    #print(classes)
-    train_data, test_data, train_classes, test_classes = train_test_split(numeric_data, classes, test_size=division_value, random_state=1234)
+    colnames = data.columns.array[:-1]
+    class_values = set(classes)
+    return numeric_data, classes, colnames, class_values
 
-def get_model_predictions(model_function, train_data, train_classes, data):
-    classifier = model_function
-    model = classifier.fit(train_data, train_classes)
+def get_splitted_data(data, classes, train_data_ratio):
+    return train_test_split(
+        data,
+        classes,
+        test_size=train_data_ratio,
+        random_state=DATASET_SPLIT_SEED
+    )
+
+def print_model_evaluation(model, test_data, test_classes, class_values):
     predictions = model.predict(test_data)
-    if type(model_function) == type(DecisionTreeClassifier()):
-        colnames = data.columns.array[:-1]
-        tree_text = export_text(model, feature_names=colnames)
-        print(tree_text)
-    return predictions
-
-def print_model_evaluation(model, predictions, classes, test_classes):
-    print("Decision Tree Report") if type(model) == type(DecisionTreeClassifier()) else print("Naive Bayes Report")
     accuracy = accuracy_score(test_classes, predictions)
     print("Accuracy score: ",accuracy)
     confusion_mat = confusion_matrix(test_classes, predictions)
     print(confusion_mat)
-    report = classification_report(test_classes, predictions, target_names=set(classes))
+    report = classification_report(test_classes, predictions, target_names=class_values, zero_division=0)
     print(report)
 
 
-read_and_divide_data(0.5)
-
-tree_classifier = DecisionTreeClassifier()
-bayes_classifier = MultinomialNB()
-
-predictions = get_model_predictions(tree_classifier, train_data, train_classes, data)
-
-print_model_evaluation(tree_classifier, predictions, classes, test_classes)
-
-
-predictions = get_model_predictions(bayes_classifier, train_data, train_classes, data)
-
-print(predictions)
-print(test_classes)
-
-# print_model_evaluation(MultinomialNB(), predictions, classes, test_classes)
-
-
+(data, classes, colnames, class_values) = load_dataset()
+split_ratios = [0.2, 0.25, 0.3, 1/3, 0.5]
+test_id = 1
+for split_ratio in split_ratios:
+    (training_data, test_data, training_classes, test_classes) = get_splitted_data(data, classes, split_ratio)
+    naive_bayes_model = NAIVE_BAYES_CLASSIFIER.fit(training_data, training_classes)
+    decision_tree_model = TREE_CLASSIFIER.fit(training_data, training_classes) 
+    print(f"==== TEST {test_id} ====")
+    print(f"Training data: {(1 - split_ratio) * 100}    Test data: {(split_ratio * 100)}")
+    print("Decision tree report")
+    tree_text = export_text(decision_tree_model, feature_names=colnames)
+    # print(tree_text)
+    print_model_evaluation(decision_tree_model, test_data, test_classes, class_values)
+    print("Naive Bayes report")
+    print_model_evaluation(naive_bayes_model, test_data, test_classes, class_values)
+    test_id += 1

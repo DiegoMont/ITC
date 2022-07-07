@@ -10,6 +10,7 @@ TREE_CLASSIFIER = DecisionTreeClassifier()
 NAIVE_BAYES_CLASSIFIER = MultinomialNB()
 SPLIT_RATIOS = [0.2, 0.25, 0.3, 1/3, 0.5]
 FOLDS = [2, 3, 5, 7, 10]
+DATA_FILENAME = "Datos.csv"
 
 
 def split_test_evaluate():
@@ -41,7 +42,7 @@ def build_and_evaluate_models(training_data, test_data, training_classes, test_c
     print_model_evaluation(naive_bayes_model, test_data, test_classes, class_values)
 
 def load_dataset():
-    data = pd.read_csv("car.data")
+    data = pd.read_csv(DATA_FILENAME)
     text_to_data_convertion = {
         "vhigh": 4, "high": 3, "med": 2, "low": 1,
         "5more": 5,
@@ -64,7 +65,7 @@ def get_splitted_data(data, classes, train_data_ratio):
     )
 
 def get_fold_splitted_data(data, classes, fold):
-    skf = KFold(fold, shuffle=False)
+    skf = StratifiedKFold(fold, shuffle=False)
     for train_index, test_index in skf.split(data, classes):
         training_data, test_data = data.iloc[train_index], data.iloc[test_index]
         training_classes, test_classes = classes[train_index], classes[test_index]

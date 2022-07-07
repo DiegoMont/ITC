@@ -10,7 +10,7 @@ TREE_CLASSIFIER = DecisionTreeClassifier()
 NAIVE_BAYES_CLASSIFIER = MultinomialNB()
 SPLIT_RATIOS = [0.2, 0.25, 0.3, 1/3, 0.5]
 FOLDS = [2, 3, 5, 7, 10]
-DATA_FILENAME = "Datos.csv"
+DATA_FILENAME = "car.data"
 
 
 def split_test_evaluate():

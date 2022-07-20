@@ -2,12 +2,13 @@ from numpy import average
 import pandas as pd
 from sklearn.cluster import KMeans
 import matplotlib.pyplot as plt
+import numpy as np
 
 
 MAY_DATASET_FILENAME = "cepea-mayo.csv"
 JULY_DATASET_FILENAME = "cepea-julio.csv"
 COLUMN_NAMES = ["Sexo", "Carrera", "MS", "MP", "ML", "EsS", "EsP", "EsL", "Mes", "Clase"]
-CLAASSES = ["ES", "EP", "EL"]
+CLASSES = ["ES", "EP", "EL"]
 
 data = None
 assesment_results = None
@@ -54,21 +55,40 @@ def calculate_assesment_results():
     new_dataframe = pd.DataFrame.from_dict(scores)
     assesment_results = pd.concat([assesment_results, new_dataframe])
 
+def plot_data():
+    es_instances = assesment_results.query("Clase == 'ES'")
+    ep_instances = assesment_results.query("Clase == 'EP'")
+    el_instances = assesment_results.query("Clase == 'EL'")
+    print("ES:", es_instances.shape[0])
+    print("EP:", ep_instances.shape[0])
+    print("EL:", el_instances.shape[0])
+    _, axes = plt.subplots(3, 2)
+    plots = []
+    for a in axes:
+        for plot in a:
+            plots.append(plot)
+    for i in range(2, 8):
+        _, bins = np.histogram(assesment_results[COLUMN_NAMES[i]], bins=20)
+        axis = plots[i-2]
+        axis.hist(es_instances[COLUMN_NAMES[i]], bins=bins, alpha=0.5)
+        axis.hist(ep_instances[COLUMN_NAMES[i]], bins=bins, alpha=0.5)
+        axis.hist(el_instances[COLUMN_NAMES[i]], bins=bins, alpha=0.5)
+        axis.set_title(COLUMN_NAMES[i])
+    plots[0].legend(CLASSES, loc="best")
+    plt.show()
 
-if __name__ == "__main__":
-    load_dataset()
-    calculate_assesment_results()
+def make_clusters():
     kmeans = KMeans(n_clusters=2)
     print(assesment_results.head())
     train_data = assesment_results.iloc[:, 2:8]
     kmeans.fit(train_data)
     print(kmeans.cluster_centers_)
-    #print(train_data[:0, 0])
-    """ print(train_data)
-    train_data[0]
-    train_data[:, 1] """
-    print(kmeans.cluster_centers_)
     plt.scatter(assesment_results[COLUMN_NAMES[2]], assesment_results[COLUMN_NAMES[3]], kmeans.labels_)
     plt.scatter(kmeans.cluster_centers_[:, 0], kmeans.cluster_centers_[:, 1])
     plt.show()
-    #graph = assesment_results.plot.scatter(x=COLUMN_NAMES[2], y=COLUMN_NAMES[4]).show()
+
+if __name__ == "__main__":
+    load_dataset()
+    calculate_assesment_results()
+    plot_data()
+    make_clusters()

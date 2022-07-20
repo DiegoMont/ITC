@@ -3,6 +3,7 @@ import pandas as pd
 from sklearn.cluster import KMeans
 import matplotlib.pyplot as plt
 import numpy as np
+from sklearn.decomposition import PCA
 
 
 MAY_DATASET_FILENAME = "cepea-mayo.csv"
@@ -80,11 +81,19 @@ def plot_data():
 def make_clusters():
     kmeans = KMeans(n_clusters=2)
     print(assesment_results.head())
-    train_data = assesment_results.iloc[:, 2:8]
+    train_data = assesment_results.get([COLUMN_NAMES[2], COLUMN_NAMES[3], COLUMN_NAMES[4], COLUMN_NAMES[5], COLUMN_NAMES[6], COLUMN_NAMES[7]])
     kmeans.fit(train_data)
+    pca = PCA(n_components=2)
+    pca.fit(train_data)
+    undimensioned_data = pca.transform(train_data)
+    undimensioned_centers = pca.transform(kmeans.cluster_centers_)
     print(kmeans.cluster_centers_)
-    plt.scatter(assesment_results[COLUMN_NAMES[2]], assesment_results[COLUMN_NAMES[3]], kmeans.labels_)
-    plt.scatter(kmeans.cluster_centers_[:, 0], kmeans.cluster_centers_[:, 1])
+    # cluster 0
+    instances_cluster_0 = undimensioned_data[kmeans.labels_ == 0]
+    plt.scatter(instances_cluster_0[:, 0], instances_cluster_0[:, 1])
+    instances_cluster_1 = undimensioned_data[kmeans.labels_ == 1]
+    plt.scatter(instances_cluster_1[:, 0], instances_cluster_1[:, 1])
+    plt.scatter(undimensioned_centers[:, 0],undimensioned_centers[:, 1])
     plt.show()
 
 if __name__ == "__main__":

@@ -78,26 +78,58 @@ def plot_data():
     plots[0].legend(CLASSES, loc="best")
     plt.show()
 
-def make_clusters():
+def plot_month_groups(columns_to_use):
+    may_instances = assesment_results.query("Mes == 'MAYO'")
+    july_instances = assesment_results.query("Mes == 'JULIO'")
+    print(may_instances.head())
+    pca = PCA(n_components=2)
+    pca.fit(may_instances.get(columns_to_use))
+    plain_may = pca.transform(may_instances.get(columns_to_use))
+    plain_july = pca.transform(july_instances.get(columns_to_use))
+    plt.scatter(plain_may[:, 0], plain_may[:, 1], c="Pink", alpha=0.5)
+    plt.scatter(plain_july[:, 0], plain_july[:, 1], c="Orange")
+    plt.show()
+
+def make_month_clusters(columns_to_use):
     kmeans = KMeans(n_clusters=2)
-    print(assesment_results.head())
-    train_data = assesment_results.get([COLUMN_NAMES[2], COLUMN_NAMES[3], COLUMN_NAMES[4], COLUMN_NAMES[5], COLUMN_NAMES[6], COLUMN_NAMES[7]])
+    #print(assesment_results.head())
+    train_data = assesment_results.get(columns_to_use)
     kmeans.fit(train_data)
     pca = PCA(n_components=2)
     pca.fit(train_data)
     undimensioned_data = pca.transform(train_data)
+    undimensioned_data = np.c_[undimensioned_data, assesment_results[COLUMN_NAMES[8]]]
     undimensioned_centers = pca.transform(kmeans.cluster_centers_)
-    print(kmeans.cluster_centers_)
     # cluster 0
     instances_cluster_0 = undimensioned_data[kmeans.labels_ == 0]
-    plt.scatter(instances_cluster_0[:, 0], instances_cluster_0[:, 1])
     instances_cluster_1 = undimensioned_data[kmeans.labels_ == 1]
-    plt.scatter(instances_cluster_1[:, 0], instances_cluster_1[:, 1])
-    plt.scatter(undimensioned_centers[:, 0],undimensioned_centers[:, 1])
-    plt.show()
+    month_counts = [0, 0, 0, 0]
+    for instance in instances_cluster_0:
+        if instance[2] == 'MAYO':
+            month_counts[0] += 1
+        else:
+            month_counts[1] += 1
+    for instance in instances_cluster_1:
+        if instance[2] == 'MAYO':
+            month_counts[2] += 1
+        else:
+            month_counts[3] += 1
+    print(month_counts)
+    plt.scatter(instances_cluster_0[:, 0], instances_cluster_0[:, 1], c="Red")
+    plt.scatter(instances_cluster_1[:, 0], instances_cluster_1[:, 1], c="Blue")
+    plt.scatter(undimensioned_centers[:, 0],undimensioned_centers[:, 1], c="Green")
+    accuracy = (month_counts[0] + month_counts[1]) / (month_counts[0] + month_counts[1] + month_counts[2] + month_counts[3])
+    precision = month_counts[0] / (month_counts[0] + month_counts[1])
+    recall = month_counts[0] / (month_counts[0] + month_counts[2])
+    fscore = 2 * ((precision * recall)/ (precision + recall))
+    print(f"Accuracy: {accuracy}\nPrecision: {precision}\nRecall: {recall}\nF1-score: {fscore}")
+    #plt.show()
 
 if __name__ == "__main__":
     load_dataset()
     calculate_assesment_results()
-    plot_data()
-    make_clusters()
+    # plot_data()
+    # prueba mayo julio
+    #make_month_clusters([COLUMN_NAMES[2], COLUMN_NAMES[4], COLUMN_NAMES[5], COLUMN_NAMES[6], COLUMN_NAMES[7]])
+    #plot_month_groups([COLUMN_NAMES[2], COLUMN_NAMES[4], COLUMN_NAMES[5], COLUMN_NAMES[6], COLUMN_NAMES[7]])
+    # prueba de enfoque de aprendizaje

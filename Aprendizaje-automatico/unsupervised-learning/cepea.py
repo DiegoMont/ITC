@@ -1,6 +1,6 @@
 from numpy import average
 import pandas as pd
-from sklearn.cluster import KMeans
+from sklearn.cluster import AgglomerativeClustering, KMeans
 import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.decomposition import PCA
@@ -125,11 +125,99 @@ def make_month_clusters(columns_to_use):
     print(f"Accuracy: {accuracy}\nPrecision: {precision}\nRecall: {recall}\nF1-score: {fscore}")
     #plt.show()
 
+def plot_classes_groups(columns_to_use):
+    es_instances = assesment_results.query("Clase == 'ES'")
+    ep_instances = assesment_results.query("Clase == 'EP'")
+    el_instances = assesment_results.query("Clase == 'EL'")
+    print(es_instances.head())
+    pca = PCA(n_components=2)
+    pca.fit(es_instances.get(columns_to_use))
+    plain_es = pca.transform(es_instances.get(columns_to_use))
+    plain_ep = pca.transform(ep_instances.get(columns_to_use))
+    plain_el = pca.transform(el_instances.get(columns_to_use))
+    plt.scatter(plain_es[:, 0], plain_es[:, 1], c="Pink", alpha=0.5)
+    plt.scatter(plain_ep[:, 0], plain_ep[:, 1], c="Orange")
+    plt.scatter(plain_el[:, 0], plain_el[:, 1], c="Yellow")
+    plt.show()
+
+def make_classes_clusters(columns_to_use):
+    kmeans = KMeans(n_clusters=3)
+    train_data = assesment_results.get(columns_to_use)
+    kmeans.fit(train_data)
+    pca = PCA(n_components=2)
+    pca.fit(train_data)
+    undimensioned_data = pca.transform(train_data)
+    undimensioned_data = np.c_[undimensioned_data, assesment_results[COLUMN_NAMES[9]]]
+    undimensioned_centers = pca.transform(kmeans.cluster_centers_)
+    instances_cluster_0 = undimensioned_data[kmeans.labels_ == 0]
+    instances_cluster_1 = undimensioned_data[kmeans.labels_ == 1]
+    instances_cluster_2 = undimensioned_data[kmeans.labels_ == 2]
+    classes_counts = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    for instance in instances_cluster_0:
+        if instance[2] == 'ES':
+            classes_counts[0] += 1
+        elif instance[2] == 'EP':
+            classes_counts[1] += 1
+        else:
+            classes_counts[2] += 1
+    for instance in instances_cluster_1:
+        if instance[2] == 'ES':
+            classes_counts[3] += 1
+        elif instance[2] == 'EP':
+            classes_counts[4] += 1
+        else:
+            classes_counts[5] += 1
+    for instance in instances_cluster_2:
+        if instance[2] == 'ES':
+            classes_counts[6] += 1
+        elif instance[2] == 'EP':
+            classes_counts[7] += 1
+        else:
+            classes_counts[8] += 1
+        
+    print(classes_counts)
+    plt.scatter(instances_cluster_0[:, 0], instances_cluster_0[:, 1], c="Red")
+    plt.scatter(instances_cluster_1[:, 0], instances_cluster_1[:, 1], c="Blue")
+    plt.scatter(instances_cluster_2[:, 0], instances_cluster_2[:, 1], c="Brown")
+    plt.scatter(undimensioned_centers[:, 0],undimensioned_centers[:, 1], c="Green")
+    #me interesa ES
+    tp = classes_counts[0]
+    fp = classes_counts[1] + classes_counts[2]
+    fn = classes_counts[3] + classes_counts[6]
+    tn = classes_counts[4] + classes_counts[5] + classes_counts[7] + classes_counts[8]
+    accuracy = (tp + tn) / (tp + fp + tn + fn)
+    precision = tp / (tp + fp)
+    recall = tp / (tp + fn)
+    fscore = 2 * ((precision * recall)/ (precision + recall))
+    print(f"Accuracy: {accuracy}\nPrecision: {precision}\nRecall: {recall}\nF1-score: {fscore}")
+    #plt.show()
+
+def hierarchy_cluster(columns_to_use):
+    agg = AgglomerativeClustering(n_clusters=2)
+    train_data = assesment_results.get(columns_to_use)
+    pca = PCA(n_components=2)
+    pca.fit(train_data)
+    undimensioned_data = pca.transform(train_data)
+    model = agg.fit_predict(undimensioned_data)
+    print(model)
+    instances_cluster_0 = undimensioned_data[agg.labels_ == 0]
+    instances_cluster_1 = undimensioned_data[agg.labels_ == 1]
+    may_instances = undimensioned_data[assesment_results["Mes"] == "MAYO"]
+    july_instances = undimensioned_data[assesment_results["Mes"] == "JULIO"]
+    plt.scatter(instances_cluster_0[:, 0], instances_cluster_0[:, 1], c="Red", alpha=0.5)
+    plt.scatter(instances_cluster_1[:, 0], instances_cluster_1[:, 1], c="Blue", alpha=0.5)
+    plt.scatter(may_instances[:, 0], may_instances[:, 1], c="Green", alpha=0.5)
+    plt.scatter(july_instances[:, 0], july_instances[:, 1], c="Orange", alpha=0.5)
+    plt.show()
+
 if __name__ == "__main__":
     load_dataset()
     calculate_assesment_results()
     # plot_data()
     # prueba mayo julio
-    #make_month_clusters([COLUMN_NAMES[2], COLUMN_NAMES[4], COLUMN_NAMES[5], COLUMN_NAMES[6], COLUMN_NAMES[7]])
-    #plot_month_groups([COLUMN_NAMES[2], COLUMN_NAMES[4], COLUMN_NAMES[5], COLUMN_NAMES[6], COLUMN_NAMES[7]])
+    # make_month_clusters([COLUMN_NAMES[2], COLUMN_NAMES[4], COLUMN_NAMES[5], COLUMN_NAMES[6], COLUMN_NAMES[7]])
+    # plot_month_groups([COLUMN_NAMES[2], COLUMN_NAMES[4], COLUMN_NAMES[5], COLUMN_NAMES[6], COLUMN_NAMES[7]])
     # prueba de enfoque de aprendizaje
+    # make_classes_clusters([COLUMN_NAMES[2],COLUMN_NAMES[3], COLUMN_NAMES[4], COLUMN_NAMES[5], COLUMN_NAMES[6], COLUMN_NAMES[7]])
+    # plot_classes_groups([COLUMN_NAMES[2],COLUMN_NAMES[3], COLUMN_NAMES[4], COLUMN_NAMES[5], COLUMN_NAMES[6], COLUMN_NAMES[7]])
+    hierarchy_cluster([COLUMN_NAMES[2],COLUMN_NAMES[3], COLUMN_NAMES[4], COLUMN_NAMES[5], COLUMN_NAMES[6], COLUMN_NAMES[7]])

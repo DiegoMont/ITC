@@ -96,16 +96,24 @@ def plot_month_groups(columns_to_use):
 def make_month_clusters(columns_to_use):
     kmeans = KMeans(n_clusters=2)
     #print(assesment_results.head())
-    train_data = data.get(columns_to_use)
-    kmeans.fit(train_data)
+    train_data = assesment_results.get(columns_to_use)
     pca = PCA(n_components=2)
     pca.fit(train_data)
     undimensioned_data = pca.transform(train_data)
-    undimensioned_data = np.c_[undimensioned_data, data[COLUMN_NAMES[8]]]
-    undimensioned_centers = pca.transform(kmeans.cluster_centers_)
+    kmeans.fit(undimensioned_data)
+    print(kmeans.labels_)
     # cluster 0
+    mayo_instances = undimensioned_data[assesment_results["Mes"] == "MAYO"]
+    july_instances = undimensioned_data[assesment_results["Mes"] == "JULIO"]
+    undimensioned_data = np.c_[undimensioned_data, data[COLUMN_NAMES[8]]]
     instances_cluster_0 = undimensioned_data[kmeans.labels_ == 0]
     instances_cluster_1 = undimensioned_data[kmeans.labels_ == 1]
+    print(COLUMN_NAMES[-2])
+    plt.scatter(mayo_instances[:, 0], mayo_instances[:, 1], c="Pink", alpha=0.75)
+    plt.scatter(july_instances[:, 0], july_instances[:, 1], c="Red", alpha=0.75)
+    plt.title("Instancias de Mayo y Julio (excluyendo columna de MP)")
+    plt.legend(["Mayo", "Julio"], loc="best")
+    plt.show()
     month_counts = [0, 0, 0, 0]
     for instance in instances_cluster_0:
         if instance[2] == 'MAYO':
@@ -120,7 +128,7 @@ def make_month_clusters(columns_to_use):
     print(month_counts)
     plt.scatter(instances_cluster_0[:, 0], instances_cluster_0[:, 1], c="Red", alpha=0.75)
     plt.scatter(instances_cluster_1[:, 0], instances_cluster_1[:, 1], c="Blue", alpha=0.75)
-    plt.scatter(undimensioned_centers[:, 0],undimensioned_centers[:, 1], c="Green")
+    plt.scatter(kmeans.cluster_centers_[:, 0], kmeans.cluster_centers_[:, 1], c="Green")
     plt.title("K-means (K = 2)[Utilizando respuestas de preguntas]")
     plt.legend(["Cluster 1", "Cluster 2", "Centroids"], loc="best")
     month_clusters_metrics(month_counts)
@@ -265,15 +273,15 @@ if __name__ == "__main__":
     calculate_assesment_results()
     # plot_data()
     # prueba mayo julio
-    #make_month_clusters([COLUMN_NAMES[2], COLUMN_NAMES[4], COLUMN_NAMES[5], COLUMN_NAMES[6], COLUMN_NAMES[7]])
+    make_month_clusters([COLUMN_NAMES[2], COLUMN_NAMES[4], COLUMN_NAMES[5], COLUMN_NAMES[6], COLUMN_NAMES[7]])
     #make_month_clusters([COLUMN_NAMES2[i] for i in range(2, 44)])
     #make_classes_clusters([COLUMN_NAMES2[i] for i in range(2, 44)])
     # plot_month_groups([COLUMN_NAMES[2], COLUMN_NAMES[4], COLUMN_NAMES[5], COLUMN_NAMES[6], COLUMN_NAMES[7]])
     # prueba de enfoque de aprendizaje
     #make_classes_clusters([COLUMN_NAMES[2],COLUMN_NAMES[3], COLUMN_NAMES[4], COLUMN_NAMES[5], COLUMN_NAMES[6], COLUMN_NAMES[7]])
     # plot_classes_groups([COLUMN_NAMES[2],COLUMN_NAMES[3], COLUMN_NAMES[4], COLUMN_NAMES[5], COLUMN_NAMES[6], COLUMN_NAMES[7]])
-    hierarchy_months_cluster([COLUMN_NAMES2[i] for i in range(2, 44)])
-    hierarchy_classes_cluster([COLUMN_NAMES2[i] for i in range(2, 44)])
+    #hierarchy_months_cluster([COLUMN_NAMES2[i] for i in range(2, 44)])
+    #hierarchy_classes_cluster([COLUMN_NAMES2[i] for i in range(2, 44)])
 
     result = collections.Counter(assesment_results.iloc[:,1])
     print(result)

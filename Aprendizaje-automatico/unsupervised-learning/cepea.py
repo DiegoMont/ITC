@@ -96,7 +96,7 @@ def plot_month_groups(columns_to_use):
 def make_month_clusters(columns_to_use):
     kmeans = KMeans(n_clusters=2)
     #print(assesment_results.head())
-    train_data = assesment_results.get(columns_to_use)
+    train_data = data.get(columns_to_use)
     pca = PCA(n_components=2)
     pca.fit(train_data)
     undimensioned_data = pca.transform(train_data)
@@ -161,7 +161,7 @@ def plot_classes_groups(columns_to_use):
 
 def make_classes_clusters(columns_to_use):
     kmeans = KMeans(n_clusters=3)
-    train_data = data.get(columns_to_use)
+    train_data = assesment_results.get(columns_to_use)
     kmeans.fit(train_data)
     pca = PCA(n_components=2)
     pca.fit(train_data)
@@ -175,16 +175,17 @@ def make_classes_clusters(columns_to_use):
     plt.scatter(instances_cluster_1[:, 0], instances_cluster_1[:, 1], c="Blue", alpha=0.75)
     plt.scatter(instances_cluster_2[:, 0], instances_cluster_2[:, 1], c="Brown", alpha=0.75)
     plt.scatter(undimensioned_centers[:, 0],undimensioned_centers[:, 1], c="Green")
-    plt.title("K-means (K = 3)")
+    plt.title("K-means (K = 3)[Atributos: EsP, MP, EsS]")
     plt.legend(["Cluster 1", "Cluster 2", "Cluster 3", "Centroids"], loc="best")
     print_classes_metrics(instances_cluster_0, instances_cluster_1, instances_cluster_2)
-    plt.show()
     score = silhouette_score(train_data, kmeans.labels_)
     print("Silhouette", score)
+    plt.show()
 
 def print_classes_metrics(instances_cluster_0, instances_cluster_1, instances_cluster_2):
     classes_counts = [0, 0, 0, 0, 0, 0, 0, 0, 0]
     for instance in instances_cluster_0:
+        #print(instance[2])
         if instance[2] == 'ES':
             classes_counts[0] += 1
         elif instance[2] == 'EP':
@@ -211,6 +212,8 @@ def print_classes_metrics(instances_cluster_0, instances_cluster_1, instances_cl
     fp = classes_counts[1] + classes_counts[2]
     fn = classes_counts[3] + classes_counts[6]
     tn = classes_counts[4] + classes_counts[5] + classes_counts[7] + classes_counts[8]
+    print(f"TP {tp} FP {fp}")
+    print(f"FN {fn} TN {tn}")
     accuracy = (tp + tn) / (tp + fp + tn + fn)
     precision = tp / (tp + fp)
     recall = tp / (tp + fn)
@@ -249,21 +252,21 @@ def hierarchy_months_cluster(columns_to_use):
 
 def hierarchy_classes_cluster(columns_to_use):
     agg = AgglomerativeClustering(n_clusters=3)
-    train_data = data.get(columns_to_use)
+    train_data = assesment_results.get(columns_to_use)
     pca = PCA(n_components=2)
     pca.fit(train_data)
     undimensioned_data = pca.transform(train_data)
     model = agg.fit_predict(undimensioned_data)
     # print(model)
-    instances_cluster_0 = np.c_[undimensioned_data, assesment_results[COLUMN_NAMES[8]]][agg.labels_ == 0]
-    instances_cluster_1 = np.c_[undimensioned_data, assesment_results[COLUMN_NAMES[8]]][agg.labels_ == 1]
-    instances_cluster_2 = np.c_[undimensioned_data, assesment_results[COLUMN_NAMES[8]]][agg.labels_ == 2]
+    instances_cluster_0 = np.c_[undimensioned_data, assesment_results[COLUMN_NAMES[-1]]][agg.labels_ == 0]
+    instances_cluster_1 = np.c_[undimensioned_data, assesment_results[COLUMN_NAMES[-1]]][agg.labels_ == 1]
+    instances_cluster_2 = np.c_[undimensioned_data, assesment_results[COLUMN_NAMES[-1]]][agg.labels_ == 2]
     plt.scatter(instances_cluster_0[:, 0], instances_cluster_0[:, 1], c="Red", alpha=0.75)
     plt.scatter(instances_cluster_1[:, 0], instances_cluster_1[:, 1], c="Blue", alpha=0.75)
     plt.scatter(instances_cluster_2[:, 0], instances_cluster_2[:, 1], c="Brown", alpha=0.75)
-    plt.title("Agrupamiento jerárquico (K = 3) [Utilizando respuestas de preguntas]")
+    plt.title("Agrupamiento jerárquico (K = 3) [Atributos: EsP, MP, EsS]")
     plt.legend(["Cluster 1", "Cluster 2", "Cluster 3", "Centroids"], loc="best")
-    #print_classes_metrics(instances_cluster_0, instances_cluster_1, instances_cluster_2)
+    print_classes_metrics(instances_cluster_0, instances_cluster_1, instances_cluster_2)
     score = silhouette_score(train_data, model)
     print("Silhouette", score)
     plt.show()
@@ -273,8 +276,8 @@ if __name__ == "__main__":
     calculate_assesment_results()
     # plot_data()
     # prueba mayo julio
-    make_month_clusters([COLUMN_NAMES[2], COLUMN_NAMES[4], COLUMN_NAMES[5], COLUMN_NAMES[6], COLUMN_NAMES[7]])
-    #make_month_clusters([COLUMN_NAMES2[i] for i in range(2, 44)])
+    #make_month_clusters([COLUMN_NAMES[2], COLUMN_NAMES[4], COLUMN_NAMES[5], COLUMN_NAMES[6], COLUMN_NAMES[7]])
+    make_month_clusters([COLUMN_NAMES2[i] for i in range(2, 44)])
     #make_classes_clusters([COLUMN_NAMES2[i] for i in range(2, 44)])
     # plot_month_groups([COLUMN_NAMES[2], COLUMN_NAMES[4], COLUMN_NAMES[5], COLUMN_NAMES[6], COLUMN_NAMES[7]])
     # prueba de enfoque de aprendizaje
@@ -282,6 +285,9 @@ if __name__ == "__main__":
     # plot_classes_groups([COLUMN_NAMES[2],COLUMN_NAMES[3], COLUMN_NAMES[4], COLUMN_NAMES[5], COLUMN_NAMES[6], COLUMN_NAMES[7]])
     #hierarchy_months_cluster([COLUMN_NAMES2[i] for i in range(2, 44)])
     #hierarchy_classes_cluster([COLUMN_NAMES2[i] for i in range(2, 44)])
+    #hierarchy_classes_cluster([COLUMN_NAMES[i] for i in range(2, 8)])
+    #make_classes_clusters([COLUMN_NAMES[3], COLUMN_NAMES[5], COLUMN_NAMES[6]])
+    #hierarchy_classes_cluster([COLUMN_NAMES[3], COLUMN_NAMES[5], COLUMN_NAMES[6]])
 
     result = collections.Counter(assesment_results.iloc[:,1])
     print(result)

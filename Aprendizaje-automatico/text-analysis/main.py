@@ -7,20 +7,20 @@ import time
 
 ENGLISH_DATASET_FILENAME = "English.txt"
 GOLD_DATASET_FILENAME = "Gold-Ingles.csv"
-NUM_INSTANCES = 100
+NUM_INSTANCES = None
 ID_COLUMN = "ID"
 AGE_COLUMN = "Age"
 GENRE_COLUMN = "Genre"
 TEXT_COLUMN = "Text"
 DOC_COLUMN = "Spacy Doc"
 RELEVANT_WORDS_COLUMN = "Relevant words"
-CLASS1_VALUE = "male"
+CLASS1_VALUE = "female"
 RELEVANT_POS = ["ADJ", "NOUN", "PROPN"]
 
 data = None
 
 def load_data():
-    global data
+    global data, NUM_INSTANCES
     dataset = pd.read_csv(ENGLISH_DATASET_FILENAME, sep="	", header=None, nrows=NUM_INSTANCES)
     classes = pd.read_csv(GOLD_DATASET_FILENAME, header=None, nrows=NUM_INSTANCES)
     dataset.columns = [ID_COLUMN, "lang", TEXT_COLUMN]
@@ -29,6 +29,8 @@ def load_data():
     data = dataset.join(classes[AGE_COLUMN]).join(classes[GENRE_COLUMN])
     docs = {DOC_COLUMN: []}
     i = 0
+    if NUM_INSTANCES is None:
+        NUM_INSTANCES = len(dataset[ID_COLUMN])
     progress_divisor = NUM_INSTANCES // 10
     print("Building Docs...")
     start = time.time()
@@ -67,6 +69,8 @@ def describe_data():
     print(class_count)
     print(f"AVG CHARS IN TEXT: {mean_text_len}")
     print(f"AVG WORDS: {mean_words}")
+    print(f"WORDS IN CLASS 1: {class1_words}")
+    print(f"WORDS IN CLASS 2: {class2_words}")
     print("MOST COMMON WORDS")
     print(most_common_words.most_common(20))
     print("LEAST COMMON WORDS")

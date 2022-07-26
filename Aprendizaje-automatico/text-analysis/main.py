@@ -59,9 +59,12 @@ def describe_data():
     mean_text_len /= len(data[TEXT_COLUMN])
     mean_words = (class1_words + class2_words) / len(data[DOC_COLUMN])
     print(class_count)
-    print(f"Avg chars in text: {mean_text_len}")
-    print(f"Avg words: {mean_words}")
+    print(f"AVG CHARS IN TEXT: {mean_text_len}")
+    print(f"AVG WORDS: {mean_words}")
+    print("MOST COMMON WORDS")
     print(most_common_words.most_common(20))
+    print("LEAST COMMON WORDS")
+    print(most_common_words.most_common()[-20:])
 
 def get_relevant_words(doc):
     relevant_words = []

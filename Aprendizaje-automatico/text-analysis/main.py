@@ -1,5 +1,6 @@
 from collections import Counter
 import pandas as pd
+from sklearn.model_selection import train_test_split
 import spacy
 import time
 
@@ -12,6 +13,7 @@ AGE_COLUMN = "Age"
 GENRE_COLUMN = "Genre"
 TEXT_COLUMN = "Text"
 DOC_COLUMN = "Spacy Doc"
+RELEVANT_WORDS_COLUMN = "Relevant words"
 CLASS1_VALUE = "male"
 RELEVANT_POS = ["ADJ", "NOUN", "PROPN"]
 
@@ -39,7 +41,12 @@ def load_data():
     end = time.time()
     print(f"Processing time: {end - start}s")
     docs_df = pd.DataFrame.from_dict(docs)
-    data = data.join(docs_df)
+    instances_relevant_words = {RELEVANT_WORDS_COLUMN: []}
+    for _, row in docs_df.iterrows():
+        relevant_words = get_relevant_words(row[DOC_COLUMN])
+        instances_relevant_words[RELEVANT_WORDS_COLUMN].append(relevant_words)
+    relevant_words_df = pd.DataFrame.from_dict(instances_relevant_words)
+    data = data.join(docs_df).join(relevant_words_df)
 
 def describe_data():
     class_count = Counter()
@@ -54,8 +61,7 @@ def describe_data():
             class1_words += len(row[DOC_COLUMN])
         else:
             class2_words += len(row[DOC_COLUMN])
-        relevant_words = get_relevant_words(row[DOC_COLUMN])
-        most_common_words.update(relevant_words)
+        most_common_words.update(row[RELEVANT_WORDS_COLUMN])
     mean_text_len /= len(data[TEXT_COLUMN])
     mean_words = (class1_words + class2_words) / len(data[DOC_COLUMN])
     print(class_count)
@@ -65,6 +71,34 @@ def describe_data():
     print(most_common_words.most_common(20))
     print("LEAST COMMON WORDS")
     print(most_common_words.most_common()[-20:])
+
+def get_splitted_data():
+    (training_data, test_data, training_classes, test_classes) = train_test_split(
+        data[RELEVANT_WORDS_COLUMN],
+        data[GENRE_COLUMN],
+        test_size=0.30,
+        random_state=1,
+        stratify=data[GENRE_COLUMN]
+    )
+    return (training_data, test_data, training_classes, test_classes)
+
+def get_closed_words(data):
+    # TODO: Implement
+    return {"time", "good", "other", "people", "way"}
+
+def get_simple_frequency(words, data):
+    frequency_matrix = {}
+    for word in words:
+        frequency_matrix[word] = []
+    i = 0
+    for row in data:
+        for word in words:
+            frequency_matrix[word].append(0)
+        for relevant_word in row:
+            if relevant_word in words:
+                frequency_matrix[word][i] = 1
+        i += 1
+    return pd.DataFrame.from_dict(frequency_matrix)
 
 def get_relevant_words(doc):
     relevant_words = []
@@ -78,7 +112,6 @@ def get_relevant_words(doc):
     return relevant_words
 
 
-
 if __name__ == "__main__":
     # Load English tokenizer, tagger, parser and NER
     #Modo turbo
@@ -86,3 +119,7 @@ if __name__ == "__main__":
     nlp = spacy.load("en_core_web_sm")
     load_data()
     describe_data()
+    (training_data, test_data, training_classes, test_classes) = get_splitted_data()
+    closed_words = get_closed_words(training_data)
+    train_frequency = get_simple_frequency(closed_words, training_data)
+    print(train_frequency.head())

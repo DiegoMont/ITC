@@ -6,6 +6,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
+from sklearn.tree import DecisionTreeClassifier
 import spacy
 import time
 
@@ -20,7 +21,7 @@ TEXT_COLUMN = "Text"
 DOC_COLUMN = "Spacy Doc"
 RELEVANT_WORDS_COLUMN = "Relevant words"
 CLASS1_VALUE = "female"
-RELEVANT_POS = ["ADJ", "NOUN", "PROPN", "VERB"]
+RELEVANT_POS = ["ADJ", "NOUN", "PROPN", "VERB", "ADV"]
 SIMPLIFIED_TEXT_COLUMN = "Simplified text"
 
 data = None
@@ -162,8 +163,8 @@ if __name__ == "__main__":
     CountVectorizer().fit_transform(data[SIMPLIFIED_TEXT_COLUMN])
     pipe = Pipeline([
         ('frequency', CountVectorizer()),
-        ('tfidf', TfidfTransformer())]).fit(data[SIMPLIFIED_TEXT_COLUMN
-    ])
+        ('tfidf', TfidfTransformer())
+    ]).fit(data[SIMPLIFIED_TEXT_COLUMN])
     hola = pipe.transform(data[SIMPLIFIED_TEXT_COLUMN])
     print(hola.shape)
     (training_data, test_data, training_classes, test_classes) = train_test_split(
@@ -174,6 +175,7 @@ if __name__ == "__main__":
         stratify=data[GENDER_COLUMN]
     )
     print(training_data)
-    supervised_model = MultinomialNB().fit(training_data, training_classes)
+    #supervised_model = MultinomialNB().fit(training_data, training_classes)
+    supervised_model = DecisionTreeClassifier().fit(training_data, training_classes)
     class_values = set(data[GENDER_COLUMN])
     print_model_evaluation(supervised_model, test_data, test_classes, class_values)

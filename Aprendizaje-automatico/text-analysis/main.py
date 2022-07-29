@@ -1,21 +1,27 @@
 from collections import Counter
 import pandas as pd
+from sklearn.feature_extraction.text import TfidfTransformer
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.pipeline import Pipeline
+from sklearn.naive_bayes import MultinomialNB
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
 import spacy
 import time
 
 
 ENGLISH_DATASET_FILENAME = "English.txt"
 GOLD_DATASET_FILENAME = "Gold-Ingles.csv"
-NUM_INSTANCES = None
+NUM_INSTANCES = 1000
 ID_COLUMN = "ID"
 AGE_COLUMN = "Age"
-GENRE_COLUMN = "Genre"
+GENDER_COLUMN = "GENDER"
 TEXT_COLUMN = "Text"
 DOC_COLUMN = "Spacy Doc"
 RELEVANT_WORDS_COLUMN = "Relevant words"
 CLASS1_VALUE = "female"
-RELEVANT_POS = ["ADJ", "NOUN", "PROPN"]
+RELEVANT_POS = ["ADJ", "NOUN", "PROPN", "VERB"]
+SIMPLIFIED_TEXT_COLUMN = "Simplified text"
 
 data = None
 
@@ -24,9 +30,9 @@ def load_data():
     dataset = pd.read_csv(ENGLISH_DATASET_FILENAME, sep="	", header=None, nrows=NUM_INSTANCES)
     classes = pd.read_csv(GOLD_DATASET_FILENAME, header=None, nrows=NUM_INSTANCES)
     dataset.columns = [ID_COLUMN, "lang", TEXT_COLUMN]
-    classes.columns = [ID_COLUMN, AGE_COLUMN, GENRE_COLUMN]
+    classes.columns = [ID_COLUMN, AGE_COLUMN, GENDER_COLUMN]
     dataset.drop(labels="lang", axis=1, inplace=True)
-    data = dataset.join(classes[AGE_COLUMN]).join(classes[GENRE_COLUMN])
+    data = dataset.join(classes[AGE_COLUMN]).join(classes[GENDER_COLUMN])
     docs = {DOC_COLUMN: []}
     i = 0
     if NUM_INSTANCES is None:
@@ -43,10 +49,12 @@ def load_data():
     end = time.time()
     print(f"Processing time: {end - start}s")
     docs_df = pd.DataFrame.from_dict(docs)
-    instances_relevant_words = {RELEVANT_WORDS_COLUMN: []}
+    instances_relevant_words = {RELEVANT_WORDS_COLUMN: [], SIMPLIFIED_TEXT_COLUMN: []}
     for _, row in docs_df.iterrows():
         relevant_words = get_relevant_words(row[DOC_COLUMN])
+        simple_text = get_cleaned_sentences(row[DOC_COLUMN])
         instances_relevant_words[RELEVANT_WORDS_COLUMN].append(relevant_words)
+        instances_relevant_words[SIMPLIFIED_TEXT_COLUMN].append(simple_text)
     relevant_words_df = pd.DataFrame.from_dict(instances_relevant_words)
     data = data.join(docs_df).join(relevant_words_df)
 
@@ -57,9 +65,9 @@ def describe_data():
     class2_words = 0
     most_common_words = Counter()
     for _, row in data.iterrows():
-        class_count.update([row[GENRE_COLUMN]])
+        class_count.update([row[GENDER_COLUMN]])
         mean_text_len += len(row[TEXT_COLUMN])
-        if row[GENRE_COLUMN] == CLASS1_VALUE:
+        if row[GENDER_COLUMN] == CLASS1_VALUE:
             class1_words += len(row[DOC_COLUMN])
         else:
             class2_words += len(row[DOC_COLUMN])
@@ -79,10 +87,10 @@ def describe_data():
 def get_splitted_data():
     (training_data, test_data, training_classes, test_classes) = train_test_split(
         data[RELEVANT_WORDS_COLUMN],
-        data[GENRE_COLUMN],
+        data[GENDER_COLUMN],
         test_size=0.30,
         random_state=1,
-        stratify=data[GENRE_COLUMN]
+        stratify=data[GENDER_COLUMN]
     )
     return (training_data, test_data, training_classes, test_classes)
 
@@ -107,13 +115,35 @@ def get_simple_frequency(words, data):
 def get_relevant_words(doc):
     relevant_words = []
     for entity in doc.ents:
+        pass
         relevant_words.append(entity.text)
     for token in doc:
         is_entity_part = not token.ent_iob == 2
-        is_relevant_word = token.pos_ in RELEVANT_POS
+        is_relevant_word = True #token.pos_ in RELEVANT_POS
         if not is_entity_part and is_relevant_word:
             relevant_words.append(token.lemma_)
     return relevant_words
+
+def get_cleaned_sentences(doc):
+    text = ""
+    for entity in doc.ents:
+        pass
+        text += " " + entity.text
+    for token in doc:
+        is_entity_part = not token.ent_iob == 2
+        is_relevant_word = True #token.pos_ in RELEVANT_POS
+        if not is_entity_part and is_relevant_word:
+            text += " " + token.lemma_
+    return text
+
+def print_model_evaluation(model, test_data, test_classes, class_values):
+    predictions = model.predict(test_data)
+    accuracy = accuracy_score(test_classes, predictions)
+    print("Accuracy score: ",accuracy)
+    confusion_mat = confusion_matrix(test_classes, predictions)
+    print(confusion_mat)
+    report = classification_report(test_classes, predictions, target_names=class_values, zero_division=0)
+    print(report)
 
 
 if __name__ == "__main__":
@@ -125,5 +155,25 @@ if __name__ == "__main__":
     describe_data()
     (training_data, test_data, training_classes, test_classes) = get_splitted_data()
     closed_words = get_closed_words(training_data)
-    train_frequency = get_simple_frequency(closed_words, training_data)
-    print(train_frequency.head())
+    """ train_frequency = get_simple_frequency(closed_words, training_data)
+    print(train_frequency.head()) """
+    print(data.head())
+    print(data[SIMPLIFIED_TEXT_COLUMN].head())
+    CountVectorizer().fit_transform(data[SIMPLIFIED_TEXT_COLUMN])
+    pipe = Pipeline([
+        ('frequency', CountVectorizer()),
+        ('tfidf', TfidfTransformer())]).fit(data[SIMPLIFIED_TEXT_COLUMN
+    ])
+    hola = pipe.transform(data[SIMPLIFIED_TEXT_COLUMN])
+    print(hola.shape)
+    (training_data, test_data, training_classes, test_classes) = train_test_split(
+        hola,
+        data[GENDER_COLUMN],
+        test_size=0.30,
+        #random_state=1,
+        stratify=data[GENDER_COLUMN]
+    )
+    print(training_data)
+    supervised_model = MultinomialNB().fit(training_data, training_classes)
+    class_values = set(data[GENDER_COLUMN])
+    print_model_evaluation(supervised_model, test_data, test_classes, class_values)
